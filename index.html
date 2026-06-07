@@ -1,0 +1,1678 @@
+<!doctype html>
+<html class="no-js" lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>A.C XUAN TAI PROFILE</title>
+    <meta name="description" content="A.C Xuân Tài - Singer-songwriter, Music Producer from XT Production">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:image" content="https://acxuantai.com/img/thumb.jpg" />
+
+    <link rel="shortcut icon" type="x-icon" href="https://acxuantai.com/favicon.ico">
+    
+    <!-- START ALL CSS (Sử dụng CDN để đảm bảo hoạt động trong môi trường này) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/slicknav.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pagePiling.js/1.5.6/jquery.pagepiling.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <!-- END ALL CSS --> 
+
+    <style>
+        /* Base Theme Logic */
+        body { font-family: 'Montserrat', sans-serif; overflow: hidden; }
+        #main-wrapper { transition: all 1s ease-in-out; }
+        
+        .pp-scrollable { overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .section-content { padding-top: 120px; padding-bottom: 100px; min-height: 100vh; }
+        @media (min-width: 992px) {
+            .game-section .section-content { padding-top: 40px; padding-bottom: 20px; }
+        }
+        @media (max-width: 991px) { 
+            .section-content { padding-top: 80px; padding-bottom: 40px; } 
+            .game-section .container { padding-left: 5px; padding-right: 5px; max-width: 100%; }
+            .game-section .section-content { padding-top: 35px; padding-bottom: 10px; }
+        }
+        .text-gradient { background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+        
+        /* Sparkle text hover effect */
+        .sparkle-hover { position: relative; display: inline-block; transition: all 0.3s ease; }
+        .sparkle-hover:hover { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4)); }
+        .sparkle-hover::after {
+            content: "✨"; position: absolute; top: -10px; right: -20px; font-size: 16px;
+            opacity: 0; transform: scale(0) rotate(0deg); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
+        }
+        .sparkle-hover:hover::after {
+            opacity: 1; transform: scale(1.2) rotate(15deg);
+        }
+
+        .bg-white { background: #fff !important; }
+        .vh { height: 100vh; }
+        
+        /* Navbar & Menu */
+        @keyframes shimmerText { 
+            0% { background-position: -200% center; } 
+            100% { background-position: 200% center; } 
+        }
+        @keyframes menuWiggle { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-3px); } 
+        }
+        .mainmenu ul li a { 
+            transition: 0.3s; 
+            position: relative; 
+            display: inline-block; 
+            text-decoration: none !important; 
+            border: none !important;
+            padding: 5px 0;
+        }
+        .mainmenu ul li a:hover { 
+            background: linear-gradient(90deg, #10b981, #3b82f6, #10b981) !important;
+            background-size: 200% auto !important;
+            color: transparent !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            animation: menuWiggle 0.8s ease-in-out infinite, shimmerText 1.2s linear infinite !important;
+            transform: scale(1.05);
+            text-decoration: none !important;
+            border: none !important;
+        }
+        
+        /* Dropdown styling */
+        .mainmenu ul li.has-dropdown { position: relative; cursor: pointer; }
+        .mainmenu ul li .dropdown-menu { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background: #1e293b; 
+            border-radius: 24px; 
+            min-width: 220px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            z-index: 1000;
+            margin-top: 0; /* Remove margin to prevent gap */
+            padding-top: 15px; /* Re-add space as padding */
+        }
+        .mainmenu ul li .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: transparent;
+        }
+        .mainmenu ul li:hover .dropdown-menu,
+        .mainmenu ul li.active .dropdown-menu { 
+            display: block; 
+            animation: dropdownSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        @keyframes dropdownSlideIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .mainmenu ul li .dropdown-menu li { display: block; margin: 4px 0; }
+        .mainmenu ul li .dropdown-menu li a { 
+            padding: 12px 18px; 
+            display: flex !important; 
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.7) !important; 
+            font-size: 11px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            text-align: center !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        .mainmenu ul li .dropdown-menu li a:hover { 
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #10b981 !important;
+            transform: scale(1.02);
+            -webkit-text-fill-color: #10b981 !important;
+            animation: none !important;
+        }
+        .mainmenu ul li .dropdown-menu li a:hover { 
+            background: rgba(16, 185, 129, 0.1) !important;
+            color: #10b981 !important;
+            transform: none;
+            -webkit-text-fill-color: #10b981 !important;
+            background-clip: unset !important;
+            animation: none !important;
+        }
+
+        @media (max-width: 991px) {
+            .mainmenu ul li .dropdown-menu {
+                position: static;
+                transform: none;
+                width: 100%;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                padding: 0 0 0 20px;
+                display: none;
+            }
+            .mainmenu ul li.active .dropdown-menu {
+                display: block;
+            }
+        }
+        .mainmenu ul li:hover .dropdown-menu { display: block; }
+        .mainmenu ul li .dropdown-menu li { display: block; margin: 0; }
+        .mainmenu ul li .dropdown-menu li a { 
+            padding: 10px 20px; 
+            width: 100%; 
+            text-align: center; 
+            font-size: 13px;
+        }
+        
+        .slicknav_menu { display: none; }
+        @media only screen and (min-width: 768px) {
+            .slicknav_menu { display: none !important; }
+            .mainmenu { display: block !important; }
+        }
+        #header-sticky { position: fixed; top: 0; width: 100%; z-index: 9999; padding: 20px 0; transition: 0.3s; }
+        #header-sticky.sticky { background: linear-gradient(135deg, #111827 0%, #080808 100%); padding: 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .logo img { max-height: 45px; }
+        .mainmenu ul { list-style: none; padding: 0; margin: 0; }
+        .mainmenu ul li { display: inline-block; margin-left: 20px; }
+        .mainmenu ul li a { color: #fff; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .mainmenu ul li.active a { color: #10b981; }
+        
+        /* Mobile Menu */
+        @media only screen and (max-width: 767px) {
+            .navbar-logo-col { display: none !important; }
+            .navbar-menu-col { flex: 0 0 100% !important; max-width: 100% !important; text-align: left !important; }
+            .mainmenu { display: none !important; }
+            #header-sticky { background: transparent !important; box-shadow: none !important; padding: 0 !important; pointer-events: none; }
+            #header-sticky.sticky { background: transparent !important; box-shadow: none !important; padding: 0 !important; pointer-events: none; }
+            .slicknav_menu { 
+                display: block !important; 
+                background: transparent !important; 
+                padding: 10px 15px !important; 
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: auto;
+                z-index: 10000;
+                pointer-events: auto;
+            }
+            .slicknav_btn { background: linear-gradient(to right, #10b981 0%, #3b82f6 100%) !important; border: none; border-radius: 8px; margin-top: 0; padding: 8px 10px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
+            .slicknav_txt { font-weight: 800; font-size: 13px; color: #fff !important; letter-spacing: 1px; text-transform: uppercase; display: inline-block; white-space: nowrap; }
+            .slicknav_nav { position: absolute; right: 0; top: 100%; width: calc(100vw - 30px); max-height: 80vh; overflow-y: auto; background: #111827 !important; margin-top: 5px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+            .slicknav_nav li a { padding: 15px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 600; font-size: 14px; color: #ffffff !important; transition: 0.2s; background: transparent !important; display: block !important; }
+            .slicknav_nav li a:hover { background: #10b981 !important; padding-left: 25px !important; color: #ffffff !important; }
+            .slicknav_nav .slicknav_parent ul { margin: 0 !important; background: #1a2234 !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; border-top: 1px solid rgba(255,255,255,0.05); position: relative !important; display: none; top: 0 !important; left: 0 !important; }
+            .slicknav_nav .slicknav_parent.slicknav_open ul { display: block !important; }
+            .slicknav_nav .slicknav_parent .slicknav_row { border-bottom: 1px solid rgba(255,255,255,0.05); background: transparent !important; }
+            .slicknav_nav .slicknav_parent ul li a { padding-left: 25px !important; font-size: 13px; color: rgba(255,255,255,0.8) !important; border-bottom: 1px solid rgba(255,255,255,0.02); }
+            .slicknav_arrow { float: right; font-size: 10px; margin-top: 2px; }
+            .slicknav_nav .slicknav_row { padding: 15px 20px !important; cursor: pointer; color: #ffffff !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .slicknav_nav .slicknav_row:hover { background: #10b981 !important; }
+            .slicknav_nav .slicknav_row a { display: inline !important; padding: 0 !important; margin: 0 !important; border: none !important; }
+        }
+
+        
+        /* Social Icons Gradient */
+        .social-gradient .fab { font-size: 2rem; margin-right: 15px; }
+        .social-gradient .fa-facebook { color: transparent; background: linear-gradient(to right, #1877F2 0%, #0c56b8 100%); -webkit-background-clip: text; }
+        .social-gradient .fa-youtube { color: transparent; background: linear-gradient(to right, #FF0000 0%, #c40000 100%); -webkit-background-clip: text; }
+        .social-gradient .fa-tiktok { color: transparent; background: linear-gradient(to right, #000000 0%, #333333 100%); -webkit-background-clip: text; }
+        .social-gradient .fa-instagram { color: transparent; background: linear-gradient(to right, #F56040 0%, #833AB4 100%); -webkit-background-clip: text; }
+        .social-gradient .fa-soundcloud { color: transparent; background: linear-gradient(to right, #ff5500 0%, #cc4400 100%); -webkit-background-clip: text; }
+
+        /* Về Tôi - Tiếu Sử Button */
+        .btn-gradient { background: linear-gradient(to right, #10b981 0%, #3b82f6 100%); border: none; font-weight: 600; color: white !important; transition: all 0.3s ease; display: inline-block; }
+        .btn-gradient:hover { background: linear-gradient(to right, #059669 0%, #2563eb 100%); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); text-decoration: none; }
+
+        
+        /* Social Icons Hover Animation */
+        .social-gradient a { display: inline-block; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .social-gradient a:hover { transform: translateY(-5px) scale(1.15); filter: brightness(1.2); }
+
+        /* Animated Gradient Border for Profile Image */
+        @keyframes gradientRotate { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        /* Logo Hover Effect with Smooth Transitions */
+        .logo a { 
+            display: block; 
+            position: relative; 
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+            height: 45px;
+            width: fit-content;
+        }
+        .logo a:hover { transform: scale(1.05); }
+        .logo img { 
+            max-height: 45px; 
+            display: block;
+        }
+        .logo .logo-white { 
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        .logo .logo-black { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            opacity: 0; 
+            transition: opacity 0.4s ease;
+        }
+        .logo a:hover .logo-white { opacity: 0; }
+        .logo a:hover .logo-black { opacity: 1; }
+
+        .about-img-wrapper { position: relative; display: inline-block; border-radius: 35px; animation: imgFloat 4s ease-in-out infinite; }
+        .about-img-wrapper::before { content: ''; position: absolute; top: 15px; left: 15px; right: auto; bottom: auto; width: 100%; height: 100%; border-radius: 35px; background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); z-index: -1; transition: 0.3s; }
+        .about-img-wrapper:hover::before { top: 20px; left: 20px; }
+        .about-img-wrapper img { display: block; border-radius: 35px; max-width: 100%; height: auto; position: relative; z-index: 1; transition: 0.3s transform ease-in-out; }
+        .about-img-wrapper:hover img { transform: scale(1.02); }
+        .about-img-wrapper:hover::before { transform: scale(1.02); left: 18px; top: 18px; }
+
+        /* Education & Experience Gradient Icons */
+        .resume-wrap.edu .icon { background: linear-gradient(to right, #10b981 0%, #059669 100%); border: 4px solid #fff; }
+        .resume-wrap.exp .icon { background: linear-gradient(to right, #3b82f6 0%, #2563eb 100%); border: 4px solid #fff; }
+        .resume-wrap.edu::before { background: linear-gradient(to bottom, #10b981, #059669); }
+        .resume-wrap.exp::before { background: linear-gradient(to bottom, #3b82f6, #2563eb); }
+        
+        #personal { min-height: 48px; font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
+
+        
+            #pp-nav span { background: #10b981 !important; }
+        
+        /* Desktop tooltips custom using CSS ::after */
+        @media (min-width: 768px) {
+            #pp-nav .pp-tooltip { 
+                display: none !important; /* Hide the JS injected one */
+            }
+            
+            #pp-nav li::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                left: 20px;
+                top: -8px;
+                background: #111827;
+                color: #ffffff;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 13px;
+                font-weight: 700;
+                white-space: nowrap;
+                letter-spacing: 0.5px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.2s ease;
+                transform: translateX(-5px);
+                pointer-events: none;
+            }
+            
+            #pp-nav li:hover::after,
+            #pp-nav li.active::after,
+            #pp-nav li:has(a.active)::after {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(0);
+            }
+        }
+        
+        #minesweeper-grid { display: grid; justify-content: center; touch-action: manipulation; }
+        
+        @keyframes imgFloat { 
+            0% { transform: translateY(0); } 
+            50% { transform: translateY(-15px); } 
+            100% { transform: translateY(0); } 
+        }
+        
+        @media (max-width: 767px) {
+            #pp-nav { display: none !important; }
+            .resume-wrap { margin-left: 20px; padding-left: 25px; }
+            .resume-wrap .icon { width: 30px; height: 30px; left: -15px; top: 10px; font-size: 11px; border-width: 3px; }
+            .banner-area .myphoto img { max-width: 45%; margin: 0 auto; display: block; animation: imgFloat 3.5s ease-in-out infinite; }
+            #personal { font-size: 1.2rem; min-height: 20px; }
+            h1 { font-size: 1.5rem; }
+            .lead { font-size: 14px !important; line-height: 1.6; }
+            .hero-block .row { flex-direction: column; }
+            .hero-block .col-md-6.order-1 { order: 1; margin-bottom: 20px; }
+            .hero-block .col-md-6.order-2 { order: 2; text-align: center; }
+            .hero-block .banner_inner.text-left { text-align: center !important; }
+            .game-cell { width: 26px !important; height: 26px !important; box-sizing: border-box !important; line-height: 26px !important; font-size: 11px !important; border-radius: 6px; margin: 0 !important; }
+            .game-grid { padding: 8px; gap: 2px; }
+            .game-lcd { min-width: 60px; font-size: 18px; padding: 2px 10px; }
+        }
+
+        /* Sections */
+        .py-100 { padding-top: 100px; padding-bottom: 100px; }
+        .mt-150 { margin-top: 150px; }
+        @media (max-width: 767px) { 
+            .py-100 { padding-top: 60px; padding-bottom: 60px; } 
+            .mt-150 { margin-top: 80px; }
+        }
+        .banner-area { background: #111; color: #fff; position: relative; }
+        .myphoto img { max-width: 100%; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        .about-img { width: 100%; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+        /* Resume Timeline Styling Updates */
+        .resume-page { margin-top: 50px; }
+        .resume-wrap { padding-left: 30px; margin-bottom: 40px; position: relative; }
+        .resume-wrap::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; transform: scaleY(0); transform-origin: top; transition: transform 1s ease; }
+        .resume-wrap.edu::before { background: #10b981; }
+        .resume-wrap.exp::before { background: #3b82f6; }
+        .resume-wrap.animated::before { transform: scaleY(1); }
+        .resume-wrap .icon { position: absolute; left: -24px; top: 0; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: scale(0); }
+        .resume-wrap.animated .icon { transform: scale(1); }
+        .resume-wrap:hover .icon { transform: scale(1.15) rotate(10deg); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        
+        
+        .resume-wrap .date { font-weight: 700; display: block; margin-bottom: 5px; transition: color 0.3s; }
+        .resume-wrap.edu .date { color: #10b981; }
+        .resume-wrap.exp .date { color: #3b82f6; }
+        .resume-wrap.edu:hover .date { color: #059669; }
+        .resume-wrap.exp:hover .date { color: #2563eb; }
+        
+        /* Portfolio Grid */
+        .protfolio-wrapper { position: relative; overflow: hidden; border-radius: 15px; margin-bottom: 30px; }
+        .protfolio-wrapper img { width: 100%; transition: 0.5s; }
+        .protfolio-wrapper:hover img { transform: scale(1.1); filter: brightness(0.4); }
+        .protfolio-wrapper figcaption { position: absolute; bottom: 20px; left: 20px; right: 20px; color: #fff; opacity: 0; transition: 0.5s; }
+        .protfolio-wrapper:hover figcaption { opacity: 1; }
+        .protfolio-wrapper figcaption h2 a { color: #fff; font-size: 18px; font-weight: 700; }
+
+        /* Blog/Social Cards */
+        .new-blog-builder { background: #f8fafc; border-radius: 25px; overflow: hidden; border: 1px solid #e2e8f0; height: 100%; transition: 0.3s; }
+        .new-blog-builder:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        
+        /* Social Image Crop and Badge */
+        .social-img-wrap { position: relative; width: 100%; height: auto; max-height: 350px; overflow: hidden; border-radius: 20px 20px 0 0; background: #fff; }
+        .social-cover { width: 100%; height: auto; display: block; transition: 0.5s; object-fit: contain; max-height: 350px; } /* Uncropped */
+        .new-blog-builder:hover .social-cover { transform: scale(1.02); }
+        .social-id-badge { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: #fff; padding: 4px 15px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.1); opacity: 0; transition: 0.3s; text-decoration: none !important; }
+        .new-blog-builder:hover .social-id-badge { bottom: 15px; opacity: 1; border: 2px solid #10b981; color: #10b981; }
+        .social-id-badge:hover { background: #10b981; color: #fff !important; transform: translateX(-50%) scale(1.1); }
+        @media (max-width: 767px) {
+            /* removed mobile height crop */
+            /* removed mobile object pos */
+            .social-id-badge { bottom: 10px; opacity: 1; font-size: 11px; padding: 2px 10px; border: 1px solid #10b981; color: #10b981; }
+            .grid-content { padding: 10px 15px 15px 15px; }
+            .post-title-builder a { font-size: 18px; }
+            .new-blog-builder p { font-size: 12px; margin-bottom: 5px; }
+        }
+
+        .grid-content { padding: 15px; text-align: center; }
+        .grid-content h2 { font-size: 20px; margin-bottom: 5px; }
+        .grid-content h2 a { text-decoration: none !important; display: inline-block; transition: 0.3s; }
+        .grid-content h2 a:hover { animation: menuWiggle 0.8s ease-in-out infinite; color: transparent !important; background: linear-gradient(90deg, #10b981, #3b82f6, #10b981) !important; background-size: 200% auto !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; text-decoration: none !important; }
+        
+        .grid-content p { margin-bottom: 5px; }
+        .grid-content p a { text-decoration: none !important; display: inline-block; transition: 0.3s; }
+        .grid-content p a:hover { 
+            background: linear-gradient(90deg, #10b981, #3b82f6, #10b981) !important;
+            background-size: 200% auto !important;
+            color: transparent !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            animation: menuWiggle 0.8s ease-in-out infinite, shimmerText 1.2s linear infinite !important;
+            transform: scale(1.05);
+            text-decoration: none !important;
+        }
+        .grid-content p:hover a + i, .grid-content p:hover a + .la-music { animation: menuWiggle 0.8s ease-in-out infinite; display: inline-block; }
+        .post-title-builder a { font-size: 22px; font-weight: 800; color: #1e293b; }
+
+        /* Minesweeper Integrated Style */
+        /* Flag Pulse Animation (Yellow/White Flash to contrast red flag) */
+        @keyframes flagPulse { 
+            0% { transform: scale(1); background: #facc15; color: #ef4444; box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); } 
+            50% { transform: scale(1.1); background: #ffffff; color: #ef4444; box-shadow: 0 0 20px 10px rgba(250, 204, 21, 0.2); }
+            100% { transform: scale(1); background: #facc15; color: #ef4444; box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); }
+        }
+        .btn-flag { border-radius: 12px; font-size: 18px; padding: 4px 15px; transition: 0.3s; background: transparent; border: 1px solid #ef4444; color: #ef4444; }
+        .btn-flag.active-flag { animation: flagPulse 0.8s infinite; border-color: #ef4444; }
+
+        #game-root { width: 100%; max-width: 900px; margin: 0 auto; background: #fff; border-radius: 30px; padding: 20px; box-shadow: 0 10px 50px rgba(0,0,0,0.05); }
+        .game-grid { display: grid; gap: 4px; padding: 12px; background: #f1f5f9; border-radius: 20px; margin: 0 auto; width: fit-content; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); }
+        .game-cell { width: 34px; height: 34px; box-sizing: border-box; aspect-ratio: 1/1; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; user-select: none; font-size: 14px; margin: 0; }
+        .cell-hidden { background: #e2e8f0; border-bottom: 3.5px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
+        .cell-hidden:hover { background: #cbd5e1; transform: scale(1.1); z-index: 1; }
+        .cell-revealed { background: #fff; border: 1px solid rgba(0,0,0,0.02); }
+        .game-lcd { font-family: 'JetBrains Mono', monospace; background: #111827; padding: 5px 15px; border-radius: 8px; font-size: 24px; min-width: 80px; text-align: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
+        .btn-game-mode { padding: 10px 20px; border-radius: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; border: none; }
+        @media (max-width: 767px) {
+            .btn-game-mode { padding: 8px 12px; font-size: 11px; }
+        }
+        .btn-game-mode.active { background: linear-gradient(to right, #10b981 0%, #3b82f6 100%); color: #fff; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); }
+        .btn-game-mode:not(.active) { background: #f1f5f9; color: #64748b; }
+
+        /* Puzzle Styling */
+        #puzzle-root { width: 100%; max-width: 500px; margin: 0 auto; background: #fff; border-radius: 30px; padding: 30px; box-shadow: 0 10px 50px rgba(0,0,0,0.05); }
+        .puzzle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f1f5f9; padding: 15px; border-radius: 20px; }
+        .puzzle-tile { 
+            aspect-ratio: 1/1; 
+            background: #fff; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2rem; 
+            font-weight: 800; 
+            color: #1e293b; 
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+        }
+        .puzzle-tile:not(.empty):hover { transform: scale(1.05); background: #10b981; color: #fff; }
+        .puzzle-tile.empty { background: transparent; box-shadow: none; cursor: default; }
+        .puzzle-tile.correct { background: #d1fae5; color: #065f46; border: 2px solid #10b981; }
+        .service-box { background: #f9fafb; padding: 35px; border-radius: 30px; height: 100%; border: 1px solid #f1f5f9; transition: 0.3s; }
+        .service-box:hover { background: #fff; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(16, 185, 129, 0.08); border-color: #10b981; }
+
+        /* Footer */
+        .detail-share { background: #f9fafb; padding: 40px 30px; border-radius: 30px; transition: 0.3s; border: 1px solid #eef2f6; }
+        .detail-share:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .detail-share i { font-size: 35px; color: #10b981; margin-bottom: 20px; }
+
+        /* Custom Game Modal */
+        .game-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.2); z-index: 1001; display: none; width: 90%; max-width: 400px; border: 4px solid #10b981; }
+        .game-modal.lost { border-color: #ef4444; }
+        .game-modal h2 { font-weight: 800; margin-bottom: 15px; }
+        .game-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); z-index: 1000; display: none; border-radius: 30px; }
+
+        /* Social Live Badge */
+        .live-badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 5px; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- START NAVBAR -->
+    <div id="header-sticky" class="mobile-menu small-menu">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-2 col-lg-2 col-md-3 col-sm-8 navbar-logo-col">
+                    <div class="logo">
+                        <a href="#section1" class="logo-link">
+                            <img class="logo-white" src="https://acxuantai.com/img/logo/logo-white.png" alt="logo" />
+                            <img class="logo-black" src="https://acxuantai.com/img/logo/logo-black.png" alt="logo" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-10 col-lg-10 col-md-9 col-sm-4 text-right navbar-menu-col">
+                    <div class="wrap_nav mainmenu text-right">
+                        <ul id="nav-13" class="menu">
+                            <li data-menuanchor="section1" class="active"><a href="#section1">Trang Chủ</a></li>
+                            <li data-menuanchor="section2"><a href="#section2">Về Tôi</a></li>
+                            <li data-menuanchor="section3"><a href="#section3">Hình Ảnh</a></li>
+                            <li data-menuanchor="section4"><a href="#section4">Mạng Xã Hội</a></li>
+                            <li data-menuanchor="section5"><a href="#section5">Dịch Vụ</a></li>
+                            <li data-menuanchor="section6"><a href="#section6">Liên Hệ</a></li>
+                            <li class="has-dropdown">
+                                <a href="javascript:void(0);">Giải Trí</a>
+                                <ul class="dropdown-menu">
+                                    <li data-menuanchor="section7"><a href="#section7">Dò Mìn</a></li>
+                                    <li data-menuanchor="section8"><a href="#section8">2048</a></li>
+                                    <li data-menuanchor="section9"><a href="#section9">Xếp Hình</a></li>
+                                    <li data-menuanchor="section10"><a href="#section10">Pikachu</a></li>
+                                </ul>
+                            </li>
+                            <li class="lang-switch"><a href="#" onclick="toggleLanguage(); return false;" id="lang"><img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <div id="main-wrapper">
+        <!-- SECTION 1: HOME -->
+        <div class="section pp-scrollable" id="section1">
+            <div class="banner-area hero-block vh d-flex align-items-center">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 order-2 order-md-1">
+                            <div class="banner_inner text-left">											
+                                <h3 class="text-gradient" id="personal">
+                                    <span class="typewriter-wrapper">
+                                    <span id="2sRCVJ3sE" class="typewriter-char typewriter-item-0">U</span>
+                                    <span id="PIYMVDjg5" class="typewriter-char typewriter-item-1">I</span>
+                                    <span id="9LopKcXqkCBA" class="typewriter-char typewriter-item-2">/</span>
+                                    </span><span class="typewriter-cursor">|</span>
+                                </h3>
+                                <h1><span class="sparkle-hover">A.C Xuân Tài</span></h1>
+                                <p class="lead">Singer-songwriter, Music Producer <br> <strong>Founder & CEO of XT Production</strong></p>
+                                <div class="home-all-button mt-4">
+                                    <a href="#section2" class="btn btn-gradient px-5 py-3 rounded-pill" style="font-weight: 700;">Về Tôi</a>
+                                </div>
+                            </div>										
+                        </div> 
+                        <div class="col-md-6 order-1 order-md-2 text-center">
+                            <div class="myphoto">
+                                <img src="https://acxuantai.com/img/about-img4.png" alt="AC Xuân Tài">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: VỀ TÔI & TIỂU SỬ -->
+        <div class="section pp-scrollable bg-white" id="section2">
+            <div class="section-content">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5">
+                            <div class="con-about text-center"><div class="about-img-wrapper"><img class="about-img" src="https://acxuantai.com/img/about.jpg"></div></div>
+                        </div>
+                        <div class="col-lg-6 offset-lg-1 mt-5 mt-lg-0 animate__animated animate__fadeInRight">
+                            <div class="about-text">
+                                <span class="text-gradient font-weight-bold">Profile Card</span>
+                                <h2 class="font-weight-bold mb-4">Về Tôi</h2>						
+                                <p class="lead">Tôi là một Ca nhạc sĩ, nhà sản xuất âm nhạc tự do.</p>
+                                <ul class="list-unstyled mt-4" style="font-size: 16px;">
+                                    <li class="mb-3"><strong>Tên Thật :</strong> Nguyễn Xuân Tài</li>
+                                    <li class="mb-3"><strong>Ngày Sinh :</strong> 13.03.1994</li>
+                                    <li class="mb-3"><strong>Địa Chỉ :</strong> Thành Phố Hồ Chí Minh</li>
+                                    <li class="mb-3"><strong>Công Ty :</strong> XT Production</li>
+                                    <li class="mb-3"><strong>Vai Trò :</strong> Giám Đốc</li>
+                                    <li class="mb-3"><strong>Email :</strong> hi@acxuantai.com</li>
+                                    <li class="mb-3"><strong>SĐT : </strong> 085.6600666</li>
+                                </ul>
+                                <div class="mt-4 social-gradient">
+                                    <a href="https://facebook.com/nxuantai"><i class="fab fa-facebook"></i></a>
+                                    <a href="https://youtube.com/nxuantai"><i class="fab fa-youtube"></i></a>
+                                    <a href="https://tiktok.com/@acxuantai"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://instagram.com/acxuantai"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://soundcloud.com/nxuantai"><i class="fab fa-soundcloud"></i></a>
+                                </div>
+                                <div class="mt-4">
+                                    <button class="btn-gradient px-5 py-2 rounded-pill shadow" onclick="$.fn.pagepiling.moveTo('section3');">Hình Ảnh</button>
+                                </div>
+                            </div>
+                        </div>					
+                    </div>
+
+                    <div class="row mt-5">
+                        <!-- Education -->
+                        <div class="col-md-6 mb-5">
+                            <h2 id="HocVan" class="mb-4 font-weight-bold">Học Vấn</h2>
+                            <div class="resume-wrap edu mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2009">2009</span>-<span class="year-count" data-count="2012">2012</span></span>
+                                    <h3 class="h5 mt-2">THPT Chuyên Phan Bội Châu - Nghệ An</h3>
+                                    <p class="text-muted">Học sinh lớp chuyên Tin (A2k38), tại trường THPT chuyên Phan Bội Châu - Nghệ An</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap edu mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2012">2012</span>-<span class="year-count" data-count="2016">2016</span></span>
+                                    <h3 class="h5 mt-2">Đại Học FPT</h3>
+                                    <p class="text-muted">Sinh viên ngành Kỹ Thuật Phần Mềm, Đại Học FPT Hà Nội với Học Bổng Toàn Phần. Tốt nghiệp năm 2016.</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap edu mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="">05/2015 - 09/2015</span></span>
+                                    <h3 class="h5 mt-2">Thực Tập Tại Nhật Bản</h3>
+                                    <p class="text-muted">Thực tập tại công ty Suzuki Shouten ở Osaka, Nhật Bản trong vai trò Web Developer.</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap edu mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="">10/2014</span></span>
+                                    <h3 class="h5 mt-2">Trao đổi sinh viên tại ĐH Bunkyo</h3>
+                                    <p class="text-muted">Tham gia chương trình trao đổi sinh viên tại trường ĐH Bunkyo ở Tokyo, Nhật Bản.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Experience -->
+                        <div class="col-md-6">
+                            <h2 class="mb-4 font-weight-bold">Kinh Nghiệm</h2>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2025">2025</span></span>
+                                    <h3 class="h5 mt-2">Nhạc Phim điện ảnh Hoàng Tử Quỷ</h3>
+                                    <p class="text-muted">Sáng tác, sản xuất và thể hiện ca khúc "Một Thời Khắc Khác - A.C Xuân Tài, DT Tập Rap" nhạc phim điện ảnh Hoàng Tử Quỷ ( Đạo diễn: Trần Hữu Tấn, Diễn viên: Anh Tú Atus, Lương Thế Thành, Hoàng Linh Chi...), khởi chiếu từ 5.12.2025 tại các rạp trên toàn quốc..</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2023">2023</span></span>
+                                    <h3 class="h5 mt-2">Top 1 Trending Youtube Music Việt nam</h3>
+                                    <p class="text-muted">Sáng tác ca khúc "Vì Em Chưa Bao Giờ Khóc - Hà Nhi", giữ vị trí Top 1 Trending Youtube Music Việt Nam trong 2 tuần.</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2023">2023</span></span>
+                                    <h3 class="h5 mt-2">Vinhomes Ca</h3>
+                                    <p class="text-muted">Sáng tác ca khúc "Vươn Xa Cùng Thế Giới", Giải nhì cuộc thi Sáng Tác Ca Khúc 30 năm Vingroup, giải thưởng 500 triệu đồng. Ca khúc sau đó được sử dụng làm Vinhomes Ca</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2021">2021</span></span>
+                                    <h3 class="h5 mt-2">Ca Khúc Chủ Đề Running Man Vietnam ss2</h3>
+                                    <p class="text-muted">Sáng Tác, Thể hiện và Sản xuất Ca khúc chủ đề "Chạy Đi" của Running Man Vietnam season 2 - Chơi Là Chạy. Giải Nhất cuộc thi sáng tác Themes Song.</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2020">2020</span></span>
+                                    <h3 class="h5 mt-2">Giám Đốc Âm Nhạc - Web Drama Hoàng Quý Muội</h3>
+                                    <p class="text-muted">Giám Đốc Âm nhạc dự án Web Drama lớn của đạo diễn Luk Van - "Hoàng Quý Muội", Sáng Tác và Sản Xuất toàn bộ soundtrack trong phim, trong đó có 3 ca khúc OST.<br>
+                                        Bỏ Lỡ Nhau Rồi - Hải Nam<br>
+                                        Nếu Chúng Ta Chưa Từng Gặp - A.C Xuân Tài<br>
+                                        Là Vì Anh - Mai Fin ft. A.C Xuân Tài</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2019">2019</span>-nay</span>
+                                    <h3 class="h5 mt-2">Giám Đốc Sản Xuất, Đạo Diễn MV</h3>
+                                    <p class="text-muted">Giám Đốc Sản Xuất và Đạo Diễn các MV như:<br>
+                                        7 Tỷ Người - A.C Xuân Tài ft. Deus Tiến Đạt (2019)<br>
+                                        Phải Chăng Trưởng Thành Là Chia Ly - A.C Xuân Tài (2020)<br>
+                                        Sau 30 - A.C Xuân Tài ft. Mina Phan, Duy Andy (2021)<br>
+                                        Anh Đã Tìm Được Em - A.C Xuân Tài (2022)<br>
+                                        Chầm Chậm Cùng Anh - A.C Xuân Tài (2022)<br>...<br>
+                                        với rất nhiều nghệ sĩ khách mời nổi tiếng như: Lynk Lee, Đức SVM, Lê Lý Lan Hương, Lương Huy, Thúy Kiều FAPTV, Yuno Bigboi, Củ Tỏi, Zero9, ...</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2018">2018</span>-nay</span>
+                                    <h3 class="h5 mt-2">Khách Mời Game Show</h3>
+                                    <p class="text-muted">Là khách mời của rât nhiều Game Show truyền hình nổi tiếng như:<br>
+                                        Ký Ức Vui Vẻ (ss3 #10)<br>Khúc Hát Se Duyên (#13)<br>
+                                        Sàn Đấu Ca Từ (ss3 #12, ss4 #14)<br>Đấu Trường Âm Nhạc (ss3 #11)<br>
+                                        Ai Là Triệu Phú (17/6/2025)<br>Ca Sĩ Bí Ẩn (ss3 #3)<br>
+                                        Giọng Ca Bí Ẩn (ss2 #6)<br>Bản Lĩnh Ngôi Sao (#129)<br>
+                                        Người Hát Tình Ca 2024 (#6)<br>Khuôn Mặt Đáng Tin (#16)<br>
+                                        Đối Mặt Thời Gian (ss1 #4)<br>Chọn Đâu Cho Đúng (ss3 #6)<br>
+                                        Trai Đẹp Vào Bếp (#18)<br>Tình Khúc Giao Mùa (ss2 #4)<br>
+                                        Tặng Em Một Bản Tình Ca (#3)<br>...</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2017">2017</span>-nay</span>
+                                    <h3 class="h5 mt-2">Sản Xuất nhạc Phim Web Drama</h3>
+                                    <p class="text-muted">Sáng tác, hát và sản xuất OST cho rất nhiều Web Drama triệu view như: SVM Mì Tôm, Tình Đầu Đại Ca, Năm Đó Chúng Ta 18, Tự Giác Yêu Anh, Thiên Ân Phiêu Lưu Ký, Vợ Chồng Sửu Nhi, WHO ARE YOU...</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2016">2016</span></span>
+                                    <h3 class="h5 mt-2">Nhạc phim Điện Ảnh "Tháng 5 Để Dành"</h3>
+                                    <p class="text-muted">Sáng tác ca khúc "Cơn Mưa Tuổi Thanh Xuân - Lynk Lee", OST Phim Điện Ảnh "Tháng 5 Để Dành" của Đạo diễn Lê Hà Nguyên.</p>
+                                </div>
+                            </div>
+                            <div class="resume-wrap exp mb-4">
+                                <div class="icon">
+                                    <i class="fa fa-briefcase"></i>
+                                </div>
+                                <div class="text">
+                                    <span class="date"><span class="year-count" data-count="2015">2015</span>-nay</span>
+                                    <h3 class="h5 mt-2">Sản Xuất Nhạc Quảng Cáo, Nhạc Thương Hiệu</h3>
+                                    <p class="text-muted">Sáng Tác, Thể hiện và Sản xuất các ca khúc nhạc Thương Hiệu, nhạc Quảng Cáo cho các Thương Hiệu lớn nhỏ như: Nội Thất Ahome, Đại Học FPT, Đại Học Văn Hiến, GIZ, Sumo Yakiniku, Kichi Kichi...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: HÌNH ẢNH (Portfolio Items Restored) -->
+        <div class="section pp-scrollable bg-white" id="section3">
+            <div class="section-content">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span class="text-gradient">Hình Ảnh</span>
+                        <h2>Hình Ảnh Nổi Bật</h2>
+                        <p>Sự kiện & TV Game Show tôi đã tham gia.</p>
+                    </div>
+                    <div class="row">
+                        <!-- Portfolio items list exactly like backup -->
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/01.jpg" alt="Portfolio 1">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=W0_x5xqWI-E" target="_blank">Đấu Trường Âm Nhạc</a></h2><p>Người Chơi</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/02.jpg" alt="Portfolio 2">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=3seFVv1Obic" target="_blank">Trai Đẹp vào Bếp</a></h2><p>Khách Mời</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/03.jpg" alt="Portfolio 3">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=bs5UOaPj0wA" target="_blank">Ký Ức Vui Vẻ</a></h2><p>Ca Sĩ Biểu Diễn</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/04.jpg" alt="Portfolio 4">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=nLsgBN0qyqk" target="_blank">Sàn Đấu Ca Từ</a></h2><p>Người Chơi</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/08.jpg" alt="Portfolio 8">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=5sfkgT-_LD8" target="_blank">MV Sau 30</a></h2><p>Giám Đốc Sản Xuất, Đạo Diễn, Diễn Viên, Ca Sĩ, Nhạc Sĩ</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/06.jpg" alt="Portfolio 6">
+                                <figcaption><h2><a href="https://youtu.be/QFiSU0f-pbc?t=1078" target="_blank">La La School</a></h2><p>Diễn Viên</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/05.jpg" alt="Portfolio 5">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=WPQSWe1cFxY&t=285s" target="_blank">Ca Sĩ Bí Ẩn</a></h2><p>Ca Sĩ Biểu Diễn</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/07.jpg" alt="Portfolio 7">
+                                <figcaption><h2><a href="https://pops.vn/series/hoang-quy-muoi-5fae5a102b1bd200354e4c88" target="_blank">Hoàng Quý Muội</a></h2><p>Giám Đốc Âm Nhạc, Diễn Viên</p></figcaption>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="protfolio-wrapper">
+                                <img src="https://acxuantai.com/img/portfolio/09.jpg" alt="Portfolio 9">
+                                <figcaption><h2><a href="https://www.youtube.com/watch?v=qeIK3NzUcdQ" target="_blank">Biểu Diễn</a></h2><p>Ca Sĩ</p></figcaption>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: MẠNG XÃ HỘI (Alignment and Content Restored) -->
+        <div class="section pp-scrollable bg-white" id="section4">
+            <div class="section-content">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span class="text-gradient">Mạng Xã Hội</span>
+                        <h2>Tầm Ảnh Hưởng</h2>
+                    </div>
+                        <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="new-blog-builder">
+                                <div class="social-img-wrap">
+                                    <img src="https://acxuantai.com/img/blog/1.jpg" class="w-100 social-cover">
+                                    <a href="https://facebook.com/nxuantai" target="_blank" class="social-id-badge"><i class="fab fa-facebook"></i> /nxuantai</a>
+                                </div>
+                                <div class="grid-content">
+                                    <h2 class="font-weight-bold"><a href="https://facebook.com/nxuantai" class="text-gradient">Facebook</a></h2>
+                                    <p><a href="https://facebook.com/nxuantai" target="_blank" class="text-dark font-weight-bold">Nguyễn Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
+                                    <p class="text-muted"><span class="social-count" id="live-fb" data-count="85219">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="new-blog-builder">
+                                <div class="social-img-wrap">
+                                    <img src="https://acxuantai.com/img/blog/2.jpg" class="w-100 social-cover">
+                                    <a href="https://www.tiktok.com/@acxuantai" target="_blank" class="social-id-badge"><i class="fab fa-tiktok"></i> /@acxuantai</a>
+                                </div>
+                                <div class="grid-content">
+                                    <h2 class="font-weight-bold"><a href="https://www.tiktok.com/@acxuantai" class="text-gradient">TikTok</a></h2>
+                                    <p><a href="https://www.tiktok.com/@acxuantai" target="_blank" class="text-dark font-weight-bold">A.C Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
+                                    <p class="text-muted"><span class="social-count" id="live-tiktok" data-count="397500">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="new-blog-builder">
+                                <div class="social-img-wrap">
+                                    <img src="https://acxuantai.com/img/blog/3.jpg" class="w-100 social-cover">
+                                    <a href="https://www.youtube.com/nxuantai" target="_blank" class="social-id-badge"><i class="fab fa-youtube"></i> /@acxuantai</a>
+                                </div>
+                                <div class="grid-content">
+                                    <h2 class="font-weight-bold"><a href="https://www.youtube.com/nxuantai" class="text-gradient">YouTube</a></h2>
+                                    <p><a href="https://www.youtube.com/nxuantai" target="_blank" class="text-dark font-weight-bold">A.C Xuân Tài</a> <i class="las la-music text-danger"></i></p>
+                                    <p class="text-muted"><span class="social-count" id="live-youtube" data-count="15700">0</span> Subscribers <span class="badge badge-danger live-badge">LIVE</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: DỊCH VỤ -->
+        <div class="section pp-scrollable bg-white" id="section5">
+            <div class="section-content">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span class="text-gradient">Dịch Vụ</span>
+                        <h2>Tôi Có Thể Giúp Gì Cho Bạn?</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-music fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Sáng Tác</h4>
+                                <p>Sáng tác bài hát, nhạc phim, nhạc quảng cáo.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-microphone fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Biểu Diễn</h4>
+                                <p>Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-ad fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Quảng Bá</h4>
+                                <p>KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-play-circle fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Sản Xuất</h4>
+                                <p>Sản xuất MV, Phim, Viral Clips chuyên nghiệp.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-camera fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Sáng Tạo</h4>
+                                <p>Sáng tạo nội dung trên đa nền tảng xã hội.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="service-box">
+                                <i class="las la-compact-disc fa-3x text-gradient"></i>
+                                <h4 class="mt-3 font-weight-bold">Âm Nhạc</h4>
+                                <p>Music Producer & Audio Production trọn gói.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: LIÊN HỆ -->
+        <div class="section pp-scrollable bg-white" id="section6">
+            <div class="section-content">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span class="text-gradient">Liên Hệ</span>
+                        <h2>Thông Tin Hợp Tác</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="detail-share">
+                                <i class="la la-phone-volume text-gradient"></i>
+                                <h5>SĐT</h5>
+                                <p>085.6600666</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="detail-share">
+                                <i class="la la-envelope text-gradient"></i>
+                                <h5>Email</h5>
+                                <p>hi@acxuantai.com</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4 text-center">
+                            <div class="detail-share">
+                                <i class="las la-globe text-gradient"></i>
+                                <h5>Kho nhạc & Demo</h5>
+                                <p><a href="https://tài.com" target="_blank" class="font-weight-bold text-dark text-decoration-none">tài.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <p>Copyright ©2022 <a href="https://xtprod.com" class="text-success font-weight-bold">XT Production.</a> All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: DÒ MÌN -->
+        <div class="section pp-scrollable bg-white game-section" id="section7">
+            <div class="section-content">
+                <div class="container-fluid text-center px-1 sm:px-3">
+                    <div id="minesweeper-app">
+                        <!-- React will mount the Minesweeper game here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: 2048 -->
+        <div class="section pp-scrollable bg-white game-section" id="section8">
+            <div class="section-content">
+                <div class="container-fluid text-center px-1 sm:px-3">
+                    <div id="game2048-app">
+                        <!-- React will mount the 2048 game here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 9: XẾP HÌNH -->
+        <div class="section pp-scrollable bg-white game-section" id="section9">
+            <div class="section-content">
+                <div class="container-fluid text-center px-1 sm:px-3">
+                    <div id="tetris-app">
+                        <!-- React will mount the Xếp Hình game here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 10: PIKACHU -->
+        <div class="section pp-scrollable bg-white game-section" id="section10">
+            <div class="section-content">
+                <div class="container-fluid text-center px-1 sm:px-3">
+                    <div id="pikachu-app">
+                        <!-- React will mount the Pikachu game here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>		  	  				 		 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script> 	  			
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pagePiling.js/1.5.6/jquery.pagepiling.min.js"></script>					
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            // Try Node.js endpoint first (for AI Studio Preview), fallback to PHP (for host)
+            window.liveStats = { facebook: 85210, tiktok: 400000, youtube: 15700 }; // fallback
+            
+            function fetchStats(url) {
+                return fetch(url).then(r => {
+                    if (!r.ok) throw new Error("Not OK");
+                    return r.text().then(text => {
+                        try {
+                            return JSON.parse(text);
+                        } catch(e) {
+                            throw new Error("Invalid JSON");
+                        }
+                    });
+                });
+            }
+
+            fetchStats('/api/social-stats')
+                .catch(() => fetchStats('777.json?t=' + new Date().getTime()))
+                .catch(() => fetchStats('https://acxuantai.com/777.json?t=' + new Date().getTime()))
+                .catch(() => fetchStats('https://acxuantai.com/social-stats.php?t=' + new Date().getTime()))
+                .catch(() => fetchStats('social-stats.php?t=' + new Date().getTime()))
+                .then(data => {
+                    if(data && data.facebook) window.liveStats.facebook = data.facebook;
+                    if(data && data.tiktok) window.liveStats.tiktok = data.tiktok;
+                    if(data && data.youtube) window.liveStats.youtube = data.youtube;
+                    
+                    $('#live-fb').attr('data-count', window.liveStats.facebook);
+                    $('#live-tiktok').attr('data-count', window.liveStats.tiktok);
+                    $('#live-youtube').attr('data-count', window.liveStats.youtube);
+
+                    if (window.socialAnimated) {
+                        // Stop any ongoing animation so it doesn't overwrite our values, 
+                        // and re-trigger animation with new target since it already started
+                        $('.social-count').each(function() {
+                            const $this = $(this);
+                            $this.stop(true, true);
+                            const currentTarget = parseInt($this.attr('data-count')) || 0;
+                            const currentVal = parseInt($this.text().replace(/,/g, '')) || 0;
+                            $({ Counter: currentVal }).animate({ Counter: currentTarget }, {
+                                duration: 1500,
+                                easing: 'swing',
+                                step: function (now) {
+                                    $this.text(Math.ceil(now).toLocaleString());
+                                }
+                            });
+                        });
+                    }
+                })
+                .catch(err => console.log("Failed to load live stats:", err));
+                
+            // PagePiling (Quản lý scroll từng trang)
+            if ($.fn.pagepiling) {
+                $('#main-wrapper').pagepiling({
+                    menu: '#nav-13',
+                    direction: 'horizontal',
+                    anchors: ['section1', 'section2', 'section3', 'section4', 'section5', 'section6', 'section7', 'section8', 'section9', 'section10'],
+                    navigation: { 'textColor': '#000', 'bulletsColor': '#10b981', 'position': 'left', 'tooltips': ['Trang Chủ', 'Về Tôi', 'Hình Ảnh', 'Mạng Xã Hội', 'Dịch Vụ', 'Liên Hệ', 'Dò Mìn', '2048', 'Xếp Hình', 'Pikachu'] },
+                    normalScrollElements: '#root, .slicknav_nav', // Only native prevent inside game
+                    loopBottom: true,
+                    loopTop: true,
+                    afterRender: function() { 
+                        // Inject data-tooltip for CSS tooltips
+                        var tooltips = ['Trang Chủ', 'Về Tôi', 'Hình Ảnh', 'Mạng Xã Hội', 'Dịch Vụ', 'Liên Hệ', 'Dò Mìn', '2048', 'Xếp Hình', 'Pikachu'];
+                        $('#pp-nav li').each(function(index) {
+                            if (tooltips[index]) {
+                                $(this).attr('data-tooltip', tooltips[index]);
+                            }
+                        });
+
+                        // Kiểm tra nếu đang ở trang không phải trang 1 khi mới load
+                        if(window.location.hash && window.location.hash !== '#section1'){
+                            $('#header-sticky').addClass('sticky');
+                        }
+                    },
+                    afterLoad: function(anchorLink, index) {
+                    },
+                    onLeave: function(index, nextIndex, direction){
+                        // Nếu chuyển từ trang 1 sang các trang khác, hiện nền navbar
+                        if(nextIndex > 1){
+                            $('#header-sticky').addClass('sticky');
+                        } else {
+                            $('#header-sticky').removeClass('sticky');
+                        }
+                    }
+                });
+            }
+
+            // Mobile menu Emerald Emerald bar style
+            // slicknav initialization (Mobile Menu)
+            if ($.fn.slicknav) {
+                $('#nav-13').slicknav({
+                    prependTo: ".mobile-menu .container .row",
+                    label: 'MENU',
+                    allowParentLinks: false, // Click parent to open submenu
+                    closedSymbol: '<i class="fa fa-chevron-right" style="font-size:10px"></i>',
+                    openedSymbol: '<i class="fa fa-chevron-down" style="font-size:10px"></i>'
+                });
+
+                // Auto-close menu when link is clicked
+                $(document).on('click', '.slicknav_nav a[href^="#"]', function() {
+                    $('#nav-13').slicknav('close');
+                });
+                
+                // If the user clicks a submenu link, it should definitely close
+                $(document).on('click', '.slicknav_nav .slicknav_parent ul a', function() {
+                    $('#nav-13').slicknav('close');
+                });
+            }
+            
+            // Timeline Animation with IntersectionObserver
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        let $wrap = $(entry.target);
+                        if(!$wrap.hasClass('animated')) {
+                            $wrap.addClass('animated');
+                            $wrap.find('.year-count').each(function() {
+                                const $this = $(this);
+                                let target = parseInt($this.attr('data-count')) || parseInt($this.text());
+                                // Default to start near the target year to avoid slow counting from 0
+                                let start = target > 1950 ? target - 10 : 0;
+                                $({ Counter: start }).animate({ Counter: target }, {
+                                    duration: 1500,
+                                    easing: 'swing',
+                                    step: function(now) {
+                                        $this.text(Math.ceil(now));
+                                    },
+                                    complete: function() {
+                                        $this.text(target);
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            $('.resume-wrap').each(function() {
+                timelineObserver.observe(this);
+            });
+
+            // Typewriter logic
+            const twWords = ["Ca nhạc sĩ", "Music Producer", "MV/ Film/ TVC Producer", "Content Creator", "KOL"];
+            let twIndex = 0;
+            let twCharIndex = 0;
+            let isDeleting = false;
+            let typeTimer = null;
+            function runTypewriter() {
+                const currentWord = twWords[twIndex];
+                if (isDeleting) {
+                    twCharIndex--;
+                } else {
+                    twCharIndex++;
+                }
+
+                let htmlStr = '<span class="typewriter-wrapper">';
+                for(let i=0; i<twCharIndex; i++) {
+                    htmlStr += '<span class="typewriter-char">' + currentWord.charAt(i) + '</span>';
+                }
+                htmlStr += '</span><span class="typewriter-cursor" style="animation: pulse-red 1s infinite;">|</span>';
+                $('#personal').html(htmlStr);
+
+                let typingSpeed = isDeleting ? 50 : 100;
+
+                if (!isDeleting && twCharIndex === currentWord.length) {
+                    typingSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && twCharIndex === 0) {
+                    isDeleting = false;
+                    twIndex = (twIndex + 1) % twWords.length;
+                    typingSpeed = 500;
+                }
+                typeTimer = setTimeout(runTypewriter, typingSpeed);
+            }
+            if ($('#personal').length) {
+                runTypewriter();
+            }
+
+            // --- GAME LOGIC REMOVED ---
+            // React app will handle games in #root
+
+            // Social count animation with IntersectionObserver
+            window.socialAnimated = false;
+            const socialObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !window.socialAnimated) {
+                        window.socialAnimated = true;
+                        $('.social-count').each(function() {
+                            const $this = $(this);
+                            let currentTarget = parseInt($this.attr('data-count')) || 0;
+                            
+                            $({ Counter: 0 }).animate({ Counter: currentTarget }, {
+                                duration: 3000,
+                                easing: 'swing',
+                                step: function (now) {
+                                    $this.text(Math.ceil(now).toLocaleString());
+                                },
+                                complete: function() {
+                                    $this.text(currentTarget.toLocaleString());
+                                    // Simulate live follower increases randomly
+                                    setInterval(() => {
+                                        if (Math.random() > 0.3) {
+                                            currentTarget += Math.floor(Math.random() * 3) + 1;
+                                            $this.text(currentTarget.toLocaleString());
+                                            
+                                            // Highlight effect when updated
+                                            $this.css('color', '#10b981');
+                                            setTimeout(() => {
+                                                $this.css('color', ''); // revert to normal
+                                            }, 500);
+                                        }
+                                    }, Math.floor(Math.random() * 5000) + 2000);
+                                }
+                            });
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            if ($('#section4').length) {
+                socialObserver.observe(document.querySelector('#section4'));
+            }
+
+            let safeStorage = {
+                getItem: function(key) { try { return window.localStorage.getItem(key); } catch(e) { return null; } },
+                setItem: function(key, val) { try { window.localStorage.setItem(key, val); } catch(e) {} }
+            };
+
+            // --- MINESWEEPER LOGIC REMOVED ---
+            window.initMinesweeper = function() {};
+
+            window.viewReason = function() {
+                $('#game-modal').fadeOut();
+                $('#game-overlay').hide();
+                $('#game-reset').html('PHỤC THÙ').css({
+                    'width': '120px',
+                    'font-size': '16px'
+                }).removeClass('bg-white').addClass('btn-danger text-white');
+            }
+
+            function placeMines(exR, exC) {
+                const config = DIFF[currentDiff];
+                let placed = 0;
+                while(placed < config.m) {
+                    let r = Math.floor(Math.random() * config.r);
+                    let c = Math.floor(Math.random() * config.c);
+                    if((r === exR && c === exC) || grid[r][c].isMine) continue;
+                    // Safely check distance to allow a "safe start gap"
+                    if(Math.abs(r-exR) <= 1 && Math.abs(c-exC) <= 1) continue;
+                    grid[r][c].isMine = true;
+                    placed++;
+                }
+                
+                // Calculate neighbors
+                for(let r=0; r<config.r; r++) {
+                    for(let c=0; c<config.c; c++) {
+                        if(grid[r][c].isMine) continue;
+                        let count = 0;
+                        for(let dr=-1; dr<=1; dr++) {
+                            for(let dc=-1; dc<=1; dc++) {
+                                let nr = r+dr, nc = c+dc;
+                                if(nr>=0 && nr<config.r && nc>=0 && nc<config.c && grid[nr][nc].isMine) count++;
+                            }
+                        }
+                        grid[r][c].neighbors = count;
+                    }
+                }
+            }
+
+            function handleReveal(r, c) {
+                if(gameStatus === 'WON' || gameStatus === 'LOST') return;
+                const cell = grid[r][c];
+                if(cell.state !== 'HIDDEN') return;
+
+                if(gameStatus === 'IDLE') {
+                    placeMines(r, c);
+                    gameStatus = 'PLAYING';
+                    timer = setInterval(() => {
+                        seconds++;
+                        $('#game-timer').text(String(seconds).padStart(3, '0'));
+                    }, 1000);
+                }
+
+                if(cell.isMine) {
+                    killerCell = {r, c};
+                    endGame(false);
+                    return;
+                }
+
+                revealCell(r, c);
+                $('#current-score').text(cumulativeScore + roundScore);
+                checkWin();
+            }
+
+            function revealCell(r, c) {
+                const cell = grid[r][c];
+                if(cell.state !== 'HIDDEN') return;
+                cell.state = 'REVEALED';
+                roundScore += 10; // +10 points for every cell revealed
+                
+                const el = $(`.game-cell[data-r="${r}"][data-c="${c}"]`);
+                el.removeClass('cell-hidden').addClass('cell-revealed');
+                
+                if(cell.neighbors > 0) {
+                    el.html(`<span class="num-${cell.neighbors}">${cell.neighbors}</span>`);
+                    el.css('color', getNumColor(cell.neighbors));
+                } else {
+                    for(let dr=-1; dr<=1; dr++) {
+                        for(let dc=-1; dc<=1; dc++) {
+                            let nr = r+dr, nc = c+dc;
+                            if(nr>=0 && nr<DIFF[currentDiff].r && nc>=0 && nc<DIFF[currentDiff].c) revealCell(nr, nc);
+                        }
+                    }
+                }
+            }
+
+            function handleFlag(r, c) {
+                if(gameStatus !== 'PLAYING' && gameStatus !== 'IDLE') return;
+                const cell = grid[r][c];
+                if(cell.state === 'REVEALED') return;
+
+                const el = $(`.game-cell[data-r="${r}"][data-c="${c}"]`);
+                if(cell.state === 'HIDDEN') {
+                    cell.state = 'FLAGGED';
+                    el.html('🚩');
+                    minesLeft--;
+                } else {
+                    cell.state = 'HIDDEN';
+                    el.empty();
+                    minesLeft++;
+                }
+                $('#mine-count').text(String(Math.max(0, minesLeft)).padStart(3, '0'));
+            }
+
+            function checkWin() {
+                let hiddenClean = 0;
+                grid.forEach(row => row.forEach(c => {
+                    if(!c.isMine && c.state !== 'REVEALED') hiddenClean++;
+                }));
+                if(hiddenClean === 0) endGame(true);
+            }
+
+            function endGame(won) {
+                gameStatus = won ? 'WON' : 'LOST';
+                clearInterval(timer);
+                $('#game-reset').text(won ? '😎' : '😵');
+                $('#game-overlay').fadeIn();
+
+                // Calculate loss points (partial points for flags correctly placed)
+                if(!won) {
+                    grid.forEach((row) => row.forEach((c) => {
+                        if(c.isMine && c.state === 'FLAGGED') roundScore += 50; 
+                    }));
+                }
+
+                // Reveal all mines
+                grid.forEach((row, r) => row.forEach((cItem, c) => {
+                    if(cItem.isMine) {
+                        const el = $(`.game-cell[data-r="${r}"][data-c="${c}"]`);
+                        el.html('💣').removeClass('cell-hidden').addClass('cell-revealed');
+                        if(!won && killerCell && r === killerCell.r && c === killerCell.c) {
+                            el.css('background', '#fee2e2').css('border', '2px solid #ef4444');
+                        }
+                    }
+                }));
+
+                const totalAtRoundEnd = cumulativeScore + roundScore;
+                if(won) {
+                    let timeBonus = Math.max(10, Math.floor((DIFF[currentDiff].mult * 1000) - (seconds * 5)));
+                    roundScore += timeBonus;
+                    cumulativeScore += roundScore;
+                    
+                    $('#modal-title').text('CHÚC MỪNG!').removeClass('text-danger').addClass('text-gradient');
+                    $('#modal-msg').text(`Bạn đã rà phá hết mìn và nhận thêm ${timeBonus} điểm thưởng thời gian!`);
+                    $('#modal-btn').text('MÀN MỚI').removeClass('btn-danger').addClass('btn-success');
+                    $('#modal-view-btn').hide();
+                    $('#game-modal').removeClass('lost');
+                } else {
+                    $('#modal-title').text('THẤT BẠI!').removeClass('text-gradient').addClass('text-danger');
+                    $('#modal-msg').text('Bạn đã đạp trúng mìn. Hãy thử lại từ đầu nhé!');
+                    $('#modal-btn').text('PHỤC THÙ').removeClass('btn-success').addClass('btn-danger');
+                    $('#modal-view-btn').show();
+                    $('#game-modal').addClass('lost');
+                    cumulativeScore = 0; // Reset cumulative on loss
+                }
+
+                $('#modal-round-score').text(roundScore);
+                $('#modal-total-score').text(won ? cumulativeScore : totalAtRoundEnd);
+                
+                let high = parseInt(safeStorage.getItem('acxt_highscore_' + currentDiff) || '0');
+                if((won ? cumulativeScore : totalAtRoundEnd) > high) {
+                    safeStorage.setItem('acxt_highscore_' + currentDiff, won ? cumulativeScore : totalAtRoundEnd);
+                    $('#high-score').text(won ? cumulativeScore : totalAtRoundEnd);
+                }
+
+                setTimeout(() => {
+                    $('#game-modal').fadeIn();
+                }, 800);
+            }
+
+            function getNumColor(n) {
+                const colors = ['#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#f59e0b', '#06b6d4', '#334155', '#94a3b8'];
+                return colors[n-1] || '#000';
+            }
+
+            window.changeDifficulty = function(d) {
+                currentDiff = d;
+                cumulativeScore = 0; // Reset score when difficulty changes
+                $('.btn-game-mode').removeClass('active');
+                $(`.btn-game-mode:contains('${d==='EASY'?'Dễ':d==='MEDIUM'?'Vừa':'Khó'}')`).addClass('active');
+                window.initMinesweeper();
+            };
+
+            $('#game-reset').on('click', function() {
+                cumulativeScore = 0;
+                window.initMinesweeper();
+            });
+            window.initMinesweeper();
+        });
+    </script>
+
+
+<script>
+    const translations = {
+        "Giải Trí": "Entertainment",
+        "Xếp Hình": "Tetris",
+        "Tầm Ảnh Hưởng": "Influence",
+        "Kỷ Lục": "BEST",
+        "Kỷ lục:": "BEST:",
+        "Bảng Xếp Hạng": "Leaderboard",
+        "Trang Chủ": "Home",
+        "Về Tôi": "About Me",
+        "Hình Ảnh": "Gallery",
+        "Mạng Xã Hội": "Social Media",
+        "Dịch Vụ": "Services",
+        "Liên Hệ": "Contact",
+        "Xin Chào": "Hello",
+        "Dò Mìn": "Minesweeper",
+        "Sang màn {level}": "To level {level}",
+        "Màn chơi": "Level",
+        "Điểm": "Score",
+        "Thời gian": "Time",
+        "giây": "s",
+        "Tầm ảnh hưởng của tôi trên MXH": "My influence on social media",
+        "Tôi Có Thể Giúp Gì Cho Bạn?": "How Can I Help You?",
+        "Sáng Tác": "Composing",
+        "Sáng tác bài hát, nhạc phim, nhạc quảng cáo.": "Compose songs, movie scores, and advertising music.",
+        "Biểu Diễn": "Performance",
+        "Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp.": "Singer performing at professional events.",
+        "Quảng Bá": "Promotion",
+        "KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp.": "KOL/Booking for personal and corporate brand promotion.",
+        "Sản Xuất": "Production",
+        "Sản xuất MV, Phim, Viral Clips chuyên nghiệp.": "Professional MV, Film, and Viral Clip production.",
+        "Sáng Tạo": "Creative",
+        "Sáng tạo nội dung trên đa nền tảng xã hội.": "Content creation across multiple social platforms.",
+        "Âm Nhạc": "Music",
+        "Music Producer & Audio Production trọn gói.": "Music Producer & Full-package Audio Production.",
+        "Thông Tin Hợp Tác": "Collaboration Info",
+        "SĐT": "Phone",
+        "Trang Chủ": "Home",
+        "Về Tôi": "About Me",
+        "Hình Ảnh": "Gallery",
+        "Mạng Xã Hội": "Social Network",
+        "Dịch Vụ": "Services",
+        "Dò Mìn": "Minesweeper",
+        "Liên Hệ": "Contact",
+        "Tôi là một Ca nhạc sĩ, nhà sản xuất âm nhạc tự do.": "I am a freelance Singer-songwriter and Music Producer.",
+        "Tên Thật :": "Full Name :",
+        "Ngày Sinh :": "Date of Birth :",
+        "Địa Chỉ :": "Address :",
+        "Công Ty :": "Company :",
+        "Vai Trò :": "Role :",
+        "Giám Đốc": "Director / CEO",
+        "Học Vấn": "Education",
+        "Học sinh lớp chuyên Tin (A2k38), tại trường THPT chuyên Phan Bội Châu - Nghệ An": "Student of Information Technology specialized class (A2k38) at Phan Boi Chau High School for the Gifted, Nghe An.",
+        "Sinh viên ngành Kỹ Thuật Phần Mềm, Đại Học FPT Hà Nội với Học Bổng Toàn Phần. Tốt nghiệp năm 2016.": "Software Engineering student at FPT University Hanoi with a Full Scholarship. Graduated in 2016.",
+        "Thực Tập Tại Nhật Bản": "Internship in Japan",
+        "Thực tập tại công ty Suzuki Shouten ở Osaka, Nhật Bản trong vai trò Web Developer.": "Interned at Suzuki Shouten in Osaka, Japan as a Web Developer.",
+        "Trao đổi sinh viên tại ĐH Bunkyo": "Student Exchange at Bunkyo University",
+        "Tham gia chương trình trao đổi sinh viên tại trường ĐH Bunkyo ở Tokyo, Nhật Bản.": "Participated in a student exchange program at Bunkyo University in Tokyo, Japan.",
+        "Kinh Nghiệm": "Experience",
+        "Nhạc Phim điện ảnh Hoàng Tử Quỷ": "Movie Soundtrack 'Hoàng Tử Quỷ'",
+        "Sáng tác, sản xuất và thể hiện ca khúc \"Một Thời Khắc Khác - A.C Xuân Tài, DT Tập Rap\" nhạc phim điện ảnh Hoàng Tử Quỷ ( Đạo diễn: Trần Hữu Tấn, Diễn viên: Anh Tú Atus, Lương Thế Thành, Hoàng Linh Chi...), khởi chiếu từ 5.12.2025 tại các rạp trên toàn quốc..": "Composed, produced, and performed the song 'Một Thời Khắc Khác' with DT Tập Rap for the movie 'Hoàng Tử Quỷ' (Director: Trần Hữu Tấn), premiering 5.12.2025.",
+        "Top 1 Trending Youtube Music Việt nam": "Top 1 Trending Youtube Music Vietnam",
+        "Sáng tác ca khúc \"Vì Em Chưa Bao Giờ Khóc - Hà Nhi\", giữ vị trí Top 1 Trending Youtube Music Việt Nam trong 2 tuần.": "Composed 'Vì Em Chưa Bao Giờ Khóc - Hà Nhi', remaining at Top 1 Trending Youtube Music Vietnam for 2 weeks.",
+        "Sáng tác ca khúc \"Vươn Xa Cùng Thế Giới\", Giải nhì cuộc thi Sáng Tác Ca Khúc 30 năm Vingroup, giải thưởng 500 triệu đồng. Ca khúc sau đó được sử dụng làm Vinhomes Ca": "Composed 'Vươn Xa Cùng Thế Giới', winning 2nd prize in Vingroup's 30th Anniversary Songwriting Contest. The song was later adopted as the Vinhomes Anthem.",
+        "Ca Khúc Chủ Đề Running Man Vietnam ss2": "Theme Song for Running Man Vietnam ss2",
+        "Sáng Tác, Thể hiện và Sản xuất Ca khúc chủ đề \"Chạy Đi\" của Running Man Vietnam season 2 - Chơi Là Chạy. Giải Nhất cuộc thi sáng tác Themes Song.": "Composed, performed, and produced the theme song 'Chạy Đi' for Running Man Vietnam SS2. Won 1st Prize in the Theme Song Contest.",
+        "Giám Đốc Âm Nhạc - Web Drama Hoàng Quý Muội": "Music Director - Web Drama 'Hoàng Quý Muội'",
+        "Giám Đốc Âm nhạc dự án Web Drama lớn của đạo diễn Luk Van - \"Hoàng Quý Muội\", Sáng Tác và Sản Xuất toàn bộ soundtrack trong phim, trong đó có 3 ca khúc OST.": "Music Director for Luk Van's major Web Drama 'Hoàng Quý Muội', composing and producing the entire soundtrack including 3 OSTs.",
+        "Giám Đốc Sản Xuất, Đạo Diễn MV": "Executive Producer, MV Director",
+        "Giám Đốc Sản Xuất và Đạo Diễn các MV như:": "Executive Producer and Director for MVs such as:",
+        "Phải Chăng Trưởng Thành Là Chia Ly - A.C Xuân Tài (2020)": "Phải Chăng Trưởng Thành Là Chia Ly - A.C Xuân Tài (2020)",
+        "Anh Đã Tìm Được Em - A.C Xuân Tài (2022)": "Anh Đã Tìm Được Em - A.C Xuân Tài (2022)",
+        "Chầm Chậm Cùng Anh - A.C Xuân Tài (2022)": "Chầm Chậm Cùng Anh - A.C Xuân Tài (2022)",
+        "với rất nhiều nghệ sĩ khách mời nổi tiếng như: Lynk Lee, Đức SVM, Lê Lý Lan Hương, Lương Huy, Thúy Kiều FAPTV, Yuno Bigboi, Củ Tỏi, Zero9, ...": "featuring famous guest artists like: Lynk Lee, Duc SVM, Le Ly Lan Huong, Luong Huy, Thuy Kieu FAPTV, Yuno Bigboi, Cu Toi, Zero9, etc.",
+        "Khách Mời Game Show": "Game Show Guest",
+        "Là khách mời của rât nhiều Game Show truyền hình nổi tiếng như:": "Guest on numerous famous TV Game Shows such as:",
+        "Sản Xuất nhạc Phim Web Drama": "Produced Music for Web Dramas",
+        "Sáng tác, hát và sản xuất OST cho rất nhiều Web Drama triệu view như: SVM Mì Tôm, Tình Đầu Đại Ca, Năm Đó Chúng Ta 18, Tự Giác Yêu Anh, Thiên Ân Phiêu Lưu Ký, Vợ Chồng Sửu Nhi, WHO ARE YOU...": "Composed, performed, and produced OSTs for multi-million view Web Dramas including SVM, Tình Đầu Đại Ca, vv.",
+        "Nhạc phim Điện Ảnh \"Tháng 5 Để Dành\"": "Movie Soundtrack 'Tháng 5 Để Dành'",
+        "Sáng tác ca khúc \"Cơn Mưa Tuổi Thanh Xuân - Lynk Lee\", OST Phim Điện Ảnh \"Tháng 5 Để Dành\" của Đạo diễn Lê Hà Nguyên.": "Composed 'Cơn Mưa Tuổi Thanh Xuân - Lynk Lee', the OST for 'Tháng 5 Để Dành' directed by Lê Hà Nguyên.",
+        "Sản Xuất Nhạc Quảng Cáo, Nhạc Thương Hiệu": "Commercial & Brand Music Production",
+        "Sáng Tác, Thể hiện và Sản xuất các ca khúc nhạc Thương Hiệu, nhạc Quảng Cáo cho các Thương Hiệu lớn nhỏ như: Nội Thất Ahome, Đại Học FPT, Đại Học Văn Hiến, GIZ, Sumo Yakiniku, Kichi Kichi...": "Composed, performed, and produced commercial music for major brands like Ahome, FPT University, Van Hien University, GIZ, Sumo Yakiniku, Kichi Kichi...",
+        "Hình Ảnh Nổi Bật": "Featured Gallery",
+        "Sự kiện & TV Game Show tôi đã tham gia.": "Some pictures of events, activities, and TV Game Shows I participated in.",
+        "Người Chơi": "Player",
+        "Khách Mời": "Guest",
+        "Ca Sĩ Biểu Diễn": "Performing Singer",
+        "Giám Đốc Sản Xuất, Đạo Diễn, Diễn Viên, Ca Sĩ, Nhạc Sĩ": "Executive Producer, Director, Actor, Singer, Composer",
+        "Diễn Viên": "Actor",
+        "Giám Đốc Âm Nhạc, Diễn Viên": "Music Director, Actor",
+        "Biểu Diễn": "Performance",
+        "Ca Sĩ": "Singer",
+        "Mạng Xã Hội": "Social Networks",
+        "Các Kênh Mạng Xã Hội Nổi Bật": "Featured Social Channels",
+        "Tầm ảnh hưởng của tôi trên MXH": "My social media influence",
+        "Dịch Vụ": "Services",
+        "KHÁM PHÁ": "EXPLORE",
+        "GIẢI TRÍ": "ENTERTAINMENT",
+        "LIÊN HỆ": "CONTACT",
+        "CÔNG VIỆC": "PORTFOLIO",
+        "DỊCH VỤ": "SERVICES",
+        "Kho nhạc & Demo": "Music & Demo",
+        "SĐT": "Phone",
+        "Mạng Xã Hội": "Social Media",
+        "Tôi Có Thể Giúp Gì Cho Bạn?": "How Can I Help You?",
+        "Sáng Tác": "Composer",
+        "Sáng tác bài hát, nhạc phim, nhạc quảng cáo.": "Compose songs, movie soundtracks, and commercial music.",
+        "Biểu Diễn": "Performance",
+        "Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp.": "Singer performing at professional events.",
+        "Quảng Bá": "Promotion",
+        "KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp.": "KOL/Booking for personal and corporate brand promotion.",
+        "Sản Xuất": "Production",
+        "Sản xuất MV, Phim, Viral Clips chuyên nghiệp.": "Professional production of MVs, Films, and Viral Clips.",
+        "Sáng Tạo": "Creative",
+        "Sáng tạo nội dung trên đa nền tảng xã hội.": "Content creation across multiple social platforms.",
+        "Âm Nhạc": "Music",
+        "Music Producer & Audio Production trọn gói.": "Full-package Music Producer & Audio Production.",
+        "Thông Tin Hợp Tác": "Partnership Info",
+        "Liên Hệ": "Contact",
+        "DÒ MÌN ACXT": "ACXT MINESWEEPER",
+        "CHÚC MỪNG!": "CONGRATULATIONS!",
+        "Bạn đã hoàn thành vòng chơi.": "You have completed the game.",
+        "VÒNG NÀY": "THIS ROUND",
+        "TỔNG ĐIỂM": "TOTAL SCORE",
+        "XEM LẠI": "REVIEW",
+        "TIẾP TỤC": "CONTINUE",
+        "CÒN LẠI": "REMAINING",
+        "Kỷ lục:": "High Score:",
+        "THỜI GIAN": "TIME",
+        "Dễ": "Easy",
+        "Vừa": "Medium",
+        "Khó": "Hard",
+        "Chuyên gia": "Expert",
+        "Chạm: 💣": "Tap: 💣",
+        "Chạm: 🚩": "Tap: 🚩",
+        "Điểm:": "Score:",
+        "Mẹo: bấm vào nút ( icon cờ ) để cắm cờ ô bạn nghi là có bom.": "Tip: Click the flag icon button to flag cells you suspect have bombs.",
+        "Thông Tin Hợp Tác": "Partnership Info"
+    };
+
+    let currentLang = 'vn';
+
+    function toggleLanguage() {
+        if (!window._langInitialized) {
+            function traverse(node) {
+                if (node.nodeType === 3) {
+                    let txt = node.nodeValue.trim();
+                    let enTxt = translations[txt];
+                    if (enTxt) {
+                        let parent = node.parentNode;
+                        let span = document.createElement('span');
+                        span.className = 'lang-node';
+                        span.setAttribute('data-vn', txt);
+                        span.setAttribute('data-en', enTxt);
+                        span.textContent = txt;
+                        parent.replaceChild(span, node);
+                    }
+                } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                    Array.from(node.childNodes).forEach(traverse);
+                }
+            }
+            traverse(document.body);
+            window._langInitialized = true;
+        }
+
+        currentLang = currentLang === 'vn' ? 'en' : 'vn';
+        let isEn = currentLang === 'en';
+        
+        // Dispatch event for React
+        window.dispatchEvent(new CustomEvent('langChanged', { detail: currentLang }));
+        
+        // toggle the flag
+        
+        // toggle the flag
+        let headerEl = document.querySelector('#lang');
+        let iconHtml = isEn ? '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/vn.svg" alt="VN">' : '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN">';
+        if (headerEl) {
+            headerEl.innerHTML = iconHtml;
+        }
+        
+        document.querySelectorAll('.lang-switch a').forEach(el => {
+            el.innerHTML = iconHtml;
+        });
+
+        document.querySelectorAll('.lang-node').forEach(span => {
+            span.textContent = isEn ? span.getAttribute('data-en') : span.getAttribute('data-vn');
+        });
+
+        if (isEn) {
+            document.body.classList.add('lang-en');
+            // specifically for typed text if it restarts
+        } else {
+            document.body.classList.remove('lang-en');
+        }
+    }
+
+    // Set initial icon to US Flag
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.lang-switch a').forEach(el => {
+             el.innerHTML = '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN">';
+        });
+    });
+</script>
+\n</body>
+</html>
