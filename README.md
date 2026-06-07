@@ -81,7 +81,7 @@ nano .env
 ```
 Nhập các thông tin cần thiết (Key API, Port hoặc các thông số khác), ví dụ:
 ```env
-PORT=3000
+PORT=2000
 NODE_ENV=production
 # RapidAPI Keys nếu bạn muốn tự động lấy Stats mạng xã hội live:
 RAPIDAPI_KEY=your_rapid_api_key_here
@@ -114,7 +114,7 @@ pm2 save
 
 ### Bước 4: Cấu hình Nginx làm Reverse Proxy để gắn Tên miền (Domain)
 
-Để người dùng truy cập trực tiếp bằng tên miền của bạn (ví dụ: `tài.com` hoặc `acxuantai.com`) thế cho địa chỉ cổng `http://IP:3000`:
+Để người dùng truy cập trực tiếp bằng tên miền của bạn (ví dụ: `acxuantai.com` hoặc `tài.com`) thế cho địa chỉ cổng `http://IP:2000`:
 
 #### 1. Cài đặt Nginx:
 ```bash
@@ -126,14 +126,14 @@ sudo apt install -y nginx
 sudo nano /etc/nginx/sites-available/acxuantai
 ```
 
-#### 3. Dán đoạn cấu hình sau vào (Hãy đổi tên miền tương ứng của bạn):
+#### 3. Dán đoạn cấu hình sau vào (Đã cấu hình theo port 2000 và các tên miền):
 ```nginx
 server {
     listen 80;
-    server_name tài.com xn--ti-yia.com www.tài.com www.xn--ti-yia.com; # Hỗ trợ IDN tên miền tiếng Việt
+    server_name acxuantai.com www.acxuantai.com tài.com xn--ti-yia.com www.tài.com www.xn--ti-yia.com; # Hỗ trợ cả tên miền quốc tế và mã hóa tiếng Việt
 
     location / {
-        proxy_pass http://127.0.0.1:3000; # Chuyển hướng các request về NodeJS App chạy trên Port 3000
+        proxy_pass http://127.0.0.1:2000; # Chuyển hướng các request về NodeJS App chạy trên Port 2000
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -159,10 +159,10 @@ sudo systemctl restart nginx
 
 ### Bước 5: Cài đặt SSL miễn phí (HTTPS) với Let's Encrypt
 
-Bảo vệ kết nối bằng chứng chỉ HTTPS bảo mật cao:
+Bảo vệ kết nối bằng chứng chỉ HTTPS bảo mật cao cho cả hai tên miền:
 ```bash
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d xn--ti-yia.com -d www.xn--ti-yia.com
+sudo certbot --nginx -d acxuantai.com -d www.acxuantai.com -d xn--ti-yia.com -d www.xn--ti-yia.com
 ```
 *Lưu ý*: Với tên miền có dấu như `tài.com`, khi thao tác thiết lập chứng chỉ SSL hoặc DNS, hãy luôn sử dụng định dạng tên miền mã hóa Punycode (bắt đầu bằng `xn--`, ví dụ: `xn--ti-yia.com`).
 
