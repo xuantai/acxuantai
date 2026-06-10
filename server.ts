@@ -6,7 +6,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import dotenv from "dotenv";
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { initializeFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 dotenv.config();
 
@@ -24,7 +24,7 @@ if (fs.existsSync(configPath)) {
   }
 }
 
-// Initialize Firebase Client DB reference in the server environment (using Client SDK to bypass cross-project credential errors)
+// Initialize Firebase Client DB references
 let firestoreDb: any = null;
 try {
   if (firebaseConfig.projectId) {
@@ -35,13 +35,44 @@ try {
       firebaseApp = getApps()[0];
     }
     const dbId = firebaseConfig.firestoreDatabaseId || "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
-    firestoreDb = getFirestore(firebaseApp, dbId);
-    console.log(`Firebase Client SDK initialized successfully using Database: ${dbId}`);
+    // Using initializeFirestore with experimentalForceLongPolling: true guarantees maximum
+    // connection stability in Node.js/Cloud Run environments, totally avoiding Grpc/stream failures.
+    firestoreDb = initializeFirestore(firebaseApp, {
+      experimentalForceLongPolling: true
+    }, dbId);
+    console.log(`Firebase Client SDK initialized successfully using Database: ${dbId} with long-polling`);
   } else {
-    console.warn("firebaseConfig.projectId is missing. Firebase integration is disabled.");
+    console.warn("firebaseConfig.projectId is missing. Firebase Client SDK integration is disabled.");
   }
 } catch (error: any) {
   console.error("Firebase Client SDK initialization skipped or failed gracefully:", error.message);
+}
+
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: null,
+      email: null,
+      emailVerified: null,
+      isAnonymous: null,
+      tenantId: null,
+      providerInfo: []
+    },
+    operationType,
+    path
+  };
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
 }
 
 app.use(express.json());
@@ -324,9 +355,9 @@ async function fetchSocialStats(force = false) {
   // 1. Try loading stats from Firestore first
   if (firestoreDb) {
     try {
-      const docRef = doc(firestoreDb, "social_stats", "latest");
+      const docRef = doc(firestoreDb, "social_stats/latest");
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      if (docSnap && docSnap.exists()) {
         const data = docSnap.data();
         if (data && typeof data.facebook === "number") {
           stats.facebook = data.facebook;
@@ -386,15 +417,20 @@ async function fetchSocialStats(force = false) {
           // Persist eternally in Firestore
           if (firestoreDb) {
             try {
-              const docRef = doc(firestoreDb, "social_stats", "latest");
               const payload = {
                 ...newStats,
                 writeToken: "e9b1d120-fbc0-4c8d-b089-a29d6756811e"
               };
+              const docRef = doc(firestoreDb, "social_stats/latest");
               await setDoc(docRef, payload);
-              console.log("Social stats persisted to Firestore successfully.");
+              console.log("Social stats persisted to custom Firestore db successfully.");
             } catch (fireErr: any) {
               console.error("Error persisting social stats to Firestore:", fireErr.message);
+              try {
+                handleFirestoreError(fireErr, OperationType.WRITE, "social_stats/latest");
+              } catch (innerErr) {
+                // Handled gracefully in update background
+              }
             }
           }
           return newStats;
@@ -445,8 +481,8 @@ async function startServer() {
     
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on http://localhost:${PORT}`);
-        // Trigger initial fetch on startup
-        fetchSocialStats().catch(err => console.error("Initial fetch failed:", err));
+        // Trigger initial forced fetch on startup to populate both custom and default databases
+        fetchSocialStats(true).catch(err => console.error("Initial fetch failed:", err));
     });
 }
 

@@ -1078,13 +1078,13 @@
                             firebase.initializeApp(firebaseConfig);
                         }
                         const dbId = "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
-                        const firestore = firebase.app().firestore(dbId);
-                        firestore.doc("social_stats/latest").get()
+                        const customFirestore = firebase.app().firestore(dbId);
+                        customFirestore.doc("social_stats/latest").get()
                             .then(doc => {
                                 if (doc.exists) {
                                     resolve(doc.data());
                                 } else {
-                                    reject("Document not found");
+                                    reject("Document not found in custom database");
                                 }
                             })
                             .catch(reject);
