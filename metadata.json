@@ -2,5 +2,5 @@
   "name": "Remix: A.C Xuân Tài Profile",
   "description": "Ca nhạc sĩ A.C Xuân Tài",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

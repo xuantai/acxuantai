@@ -5,8 +5,8 @@ import path from "path";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import dotenv from "dotenv";
-import { initializeApp, getApps } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { initializeApp, getApps } from "firebase/app";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 dotenv.config();
 
@@ -24,26 +24,24 @@ if (fs.existsSync(configPath)) {
   }
 }
 
-// Initialize Firebase Admin DB reference
+// Initialize Firebase Client DB reference in the server environment (using Client SDK to bypass cross-project credential errors)
 let firestoreDb: any = null;
 try {
   if (firebaseConfig.projectId) {
     let firebaseApp;
     if (getApps().length === 0) {
-      firebaseApp = initializeApp({
-        projectId: firebaseConfig.projectId
-      });
+      firebaseApp = initializeApp(firebaseConfig);
     } else {
       firebaseApp = getApps()[0];
     }
     const dbId = firebaseConfig.firestoreDatabaseId || "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
     firestoreDb = getFirestore(firebaseApp, dbId);
-    console.log(`Firebase Admin initialized successfully using Database: ${dbId}`);
+    console.log(`Firebase Client SDK initialized successfully using Database: ${dbId}`);
   } else {
     console.warn("firebaseConfig.projectId is missing. Firebase integration is disabled.");
   }
 } catch (error: any) {
-  console.error("Firebase Admin initialization skipped or failed gracefully:", error.message);
+  console.error("Firebase Client SDK initialization skipped or failed gracefully:", error.message);
 }
 
 app.use(express.json());
@@ -326,8 +324,9 @@ async function fetchSocialStats(force = false) {
   // 1. Try loading stats from Firestore first
   if (firestoreDb) {
     try {
-      const docSnap = await firestoreDb.doc("social_stats/latest").get();
-      if (docSnap.exists) {
+      const docRef = doc(firestoreDb, "social_stats", "latest");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
         const data = docSnap.data();
         if (data && typeof data.facebook === "number") {
           stats.facebook = data.facebook;
@@ -387,7 +386,12 @@ async function fetchSocialStats(force = false) {
           // Persist eternally in Firestore
           if (firestoreDb) {
             try {
-              await firestoreDb.doc("social_stats/latest").set(newStats);
+              const docRef = doc(firestoreDb, "social_stats", "latest");
+              const payload = {
+                ...newStats,
+                writeToken: "e9b1d120-fbc0-4c8d-b089-a29d6756811e"
+              };
+              await setDoc(docRef, payload);
               console.log("Social stats persisted to Firestore successfully.");
             } catch (fireErr: any) {
               console.error("Error persisting social stats to Firestore:", fireErr.message);
