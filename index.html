@@ -1046,12 +1046,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script> 	  			
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pagePiling.js/1.5.6/jquery.pagepiling.min.js"></script>					
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SlickNav/1.0.10/jquery.slicknav.min.js"></script>
+    
+    <!-- Firebase SDK (Compat mode) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <script>
         $(document).ready(function() {
             
             // Try Node.js endpoint first (for AI Studio Preview), fallback to PHP (for host)
             window.liveStats = { facebook: 85210, tiktok: 400000, youtube: 15700 }; // fallback
             
+            // Firebase Config for Client Firestore Direct Access
+            const firebaseConfig = {
+              apiKey: "AIzaSyAz8j_0SLubaQMiNw2ZnugPyzWPrvGYQyE",
+              authDomain: "nice-momentum-trwfn.firebaseapp.com",
+              projectId: "nice-momentum-trwfn",
+              storageBucket: "nice-momentum-trwfn.firebasestorage.app",
+              messagingSenderId: "439820764953",
+              appId: "1:439820764953:web:abcf8a172f204668bc2788"
+            };
+
+            function fetchFromFirestore() {
+                return new Promise((resolve, reject) => {
+                    try {
+                        if (typeof firebase === 'undefined') {
+                            reject("Firebase not loaded");
+                            return;
+                        }
+                        if (!firebase.apps.length) {
+                            firebase.initializeApp(firebaseConfig);
+                        }
+                        const dbId = "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
+                        const firestore = firebase.app().firestore(dbId);
+                        firestore.doc("social_stats/latest").get()
+                            .then(doc => {
+                                if (doc.exists) {
+                                    resolve(doc.data());
+                                } else {
+                                    reject("Document not found");
+                                }
+                            })
+                            .catch(reject);
+                    } catch (e) {
+                        reject(e);
+                    }
+                });
+            }
+
             function fetchStats(url) {
                 return fetch(url).then(r => {
                     if (!r.ok) throw new Error("Not OK");
@@ -1066,6 +1108,7 @@
             }
 
             fetchStats('/api/social-stats')
+                .catch(() => fetchFromFirestore())
                 .catch(() => fetchStats('777.json?t=' + new Date().getTime()))
                 .catch(() => fetchStats('https://acxuantai.com/777.json?t=' + new Date().getTime()))
                 .catch(() => fetchStats('https://acxuantai.com/social-stats.php?t=' + new Date().getTime()))

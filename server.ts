@@ -318,7 +318,7 @@ async function getStatsFromRapidAPI(currentStats?: any) {
   }
 }
 
-async function fetchSocialStats() {
+async function fetchSocialStats(force = false) {
   let stats = { ...DEFAULT_STATS };
   let lastUpdate = 0;
   let dataLoaded = false;
@@ -363,13 +363,13 @@ async function fetchSocialStats() {
   const ONE_DAY = 24 * 60 * 60 * 1000; // Cập nhật chuẩn mỗi ngày 1 lần (24 giờ)
 
   // Force update if we have absolutely no data, or if values are defaults, or if 24 hours have elapsed
-  const forceUpdate = !dataLoaded || stats.lastUpdate === 0;
-  const isExpired = (now - lastUpdate) > ONE_DAY;
+  const forceUpdate = force || !dataLoaded || stats.lastUpdate === 0;
+  const isExpired = force || (now - lastUpdate) > ONE_DAY;
 
   if (forceUpdate || isExpired) {
     if (!isUpdateInProgress) {
       isUpdateInProgress = true;
-      console.log(forceUpdate ? "Social stats cache empty, updating immediately..." : "Social stats expired (24h+), updating in background...");
+      console.log(forceUpdate ? "Social stats cache empty or forced, updating immediately..." : "Social stats expired (24h+), updating in background...");
       
       const updatePromise = getStatsFromRapidAPI(stats).then(async (newStats) => {
         if (newStats) {
@@ -412,7 +412,8 @@ async function fetchSocialStats() {
 }
 
 app.get("/api/social-stats", async (req, res) => {
-    const stats = await fetchSocialStats();
+    const force = req.query.force === "true";
+    const stats = await fetchSocialStats(force);
     res.json(stats);
 });
 
