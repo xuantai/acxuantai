@@ -4,12 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 
-$recordsDir = __DIR__ . '/records';
-if (!file_exists($recordsDir)) {
-    mkdir($recordsDir, 0777, true);
-}
-
-$statsFile = $recordsDir . '/777.json';
+$statsFile = __DIR__ . '/777.json';
 $eightHours = 8 * 60 * 60; // 8 hours in seconds
 
 $defaultStats = [
@@ -33,9 +28,10 @@ if ($fileExists) {
 }
 
 $now = time();
+$lastUpdateSeconds = ($stats['lastUpdate'] > 10000000000) ? floor($stats['lastUpdate'] / 1000) : $stats['lastUpdate'];
 $forceUpdate = !$fileExists || empty($content) || $stats['lastUpdate'] == 0;
 
-if ($forceUpdate || ($now - $stats['lastUpdate'] > $eightHours)) {
+if ($forceUpdate || ($now - $lastUpdateSeconds > $eightHours)) {
     // API Keys (Change if needed)
     $rapidApiKey = "c6c8460a53msh54cce4eba86a610p16911bjsn6ef018aaca1d"; // Your fallback key from Node
 
@@ -139,7 +135,7 @@ if ($forceUpdate || ($now - $stats['lastUpdate'] > $eightHours)) {
     }
 
     if ($updated || $forceUpdate) {
-        $newStats['lastUpdate'] = time();
+        $newStats['lastUpdate'] = time() * 1000;
         file_put_contents($statsFile, json_encode($newStats, JSON_PRETTY_PRINT));
         @chmod($statsFile, 0777);
         $stats = $newStats;
