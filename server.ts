@@ -151,9 +151,9 @@ let isUpdateInProgress = false;
 
 // Initial data
 const DEFAULT_STATS = {
-  facebook: 85210,
-  tiktok: 411200,
-  youtube: 15820,
+  facebook: 85219,
+  tiktok: 409600,
+  youtube: 18100,
   lastUpdate: 0
 };
 
@@ -176,27 +176,62 @@ async function getStatsFromRapidAPI(currentStats?: any) {
       console.log(`YouTube Stats (override): ${stats.youtube}`);
     } else {
       try {
-        const ytResponse = await axios.get('https://youtube138.p.rapidapi.com/channel/details/', {
-          params: { id: 'https://www.youtube.com/@ACXUANTAI', hl: 'en', gl: 'US' },
-          headers: { 'X-RapidAPI-Key': ytKey, 'X-RapidAPI-Host': 'youtube138.p.rapidapi.com' }
-        });
-        
-        const data = ytResponse.data;
-        if (data && data.stats && data.stats.subscribers) {
-          stats.youtube = data.stats.subscribers;
-        } else if (data && data.subscriberCountText) {
-          const text = data.subscriberCountText.simpleText || "";
-          const match = text.match(/([0-9.,]+)/);
+        let ytSuccess = false;
+        try {
+          const ytResponse = await axios.get('https://youtube138.p.rapidapi.com/channel/details/', {
+            params: { id: 'https://www.youtube.com/@ACXUANTAI', hl: 'en', gl: 'US' },
+            headers: { 'X-RapidAPI-Key': ytKey, 'X-RapidAPI-Host': 'youtube138.p.rapidapi.com' }
+          });
+          
+          const data = ytResponse.data;
+          if (data && data.stats && data.stats.subscribers) {
+            stats.youtube = data.stats.subscribers;
+            ytSuccess = true;
+          } else if (data && data.subscriberCountText) {
+            const text = data.subscriberCountText.simpleText || "";
+            const match = text.match(/([0-9.,]+)/);
+            if (match) {
+              let val = parseFloat(match[1].replace(/,/g, ''));
+              if (text.includes('K')) val *= 1000;
+              if (text.includes('M')) val *= 1000000;
+              stats.youtube = Math.floor(val);
+              ytSuccess = true;
+            }
+          }
+        } catch (e: any) { 
+          console.log("YouTube API call failed (handled gracefully):", e.message);
+        }
+
+        // Public scraping fallback if API failed
+        if (!ytSuccess) {
+          console.log("YouTube RapidAPI failed or returned invalid data. Trying direct scraping fallback...");
+          const ytScrapeRes = await axios.get("https://www.youtube.com/@ACXUANTAI", {
+            headers: {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+              "Accept-Language": "en-US,en;q=0.9"
+            },
+            timeout: 8000
+          });
+          const html = ytScrapeRes.data || "";
+          const match = html.match(/\"subscriberCountText\":\s*\{\s*\"simpleText\":\s*\"([^\"]+)\"/i) ||
+                        html.match(/\"subscriberCountText\":\s*\{\s*\"runs\":\s*\[\s*\{\s*\"text\":\s*\"([^\"]+)\"/i) ||
+                        html.match(/([0-9.,MK]+)\s*subscribers/i);
           if (match) {
-            let val = parseFloat(match[1].replace(/,/g, ''));
-            if (text.includes('K')) val *= 1000;
-            if (text.includes('M')) val *= 1000000;
+            const textVal = match[1];
+            let val = parseFloat(textVal.replace(/[^0-9.]/g, ''));
+            if (textVal.toLowerCase().includes('k')) {
+              val *= 1000;
+            } else if (textVal.toLowerCase().includes('m')) {
+              val *= 1000000;
+            }
             stats.youtube = Math.floor(val);
+            console.log(`Scraped live YouTube Subscribers: ${stats.youtube}`);
+            ytSuccess = true;
           }
         }
         console.log(`YouTube Stats: ${stats.youtube}`);
       } catch (e: any) { 
-        console.log("YouTube API info (handled gracefully):", e.message);
+        console.log("YouTube retrieval completely failed (handled gracefully):", e.message);
       }
     }
 
@@ -247,11 +282,7 @@ async function getStatsFromRapidAPI(currentStats?: any) {
           console.log("Fetching Facebook public page for scraping followers...");
           const fbScrapeRes = await axios.get("https://www.facebook.com/nxuantai", {
             headers: {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-              "Accept-Language": "en-US,en;q=0.9",
-              "Cache-Control": "no-cache",
-              "Pragma": "no-cache"
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             },
             timeout: 10000
           });
@@ -308,7 +339,7 @@ async function getStatsFromRapidAPI(currentStats?: any) {
         const ttHtml = ttRes.data;
         fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT HTML LENGTH]: ${ttHtml.length} - SNIPPET: ${ttHtml.toString().substring(0, 300)}`);
         
-        const hydrationMatch = ttHtml.match(/<script id="__UNIVERSAL_DATA_FOR_REA_T_HYDRATION__" [^>]*>([^<]+)<\/script>/);
+        const hydrationMatch = ttHtml.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" [^>]*>([^<]+)<\/script>/);
         if (hydrationMatch) {
            try {
              const jsonData = JSON.parse(hydrationMatch[1]);
@@ -319,7 +350,7 @@ async function getStatsFromRapidAPI(currentStats?: any) {
              if (statObj && statObj.followerCount) {
                stats.tiktok = statObj.followerCount;
              } else {
-                fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT JSON KEYS]: ${Object.keys(jsonData?.__DEFAULT_SCOPE__ || {}).join(",")}`);
+                 fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT JSON KEYS]: ${Object.keys(jsonData?.__DEFAULT_SCOPE__ || {}).join(",")}`);
              }
            } catch (e: any) {
              fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT JSON PARSE ERROR]: ${e.message}`);

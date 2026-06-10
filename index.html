@@ -1069,28 +1069,40 @@
 
             function fetchFromFirestore() {
                 return new Promise((resolve, reject) => {
-                    try {
-                        if (typeof firebase === 'undefined') {
-                            reject("Firebase not loaded");
-                            return;
-                        }
-                        if (!firebase.apps.length) {
-                            firebase.initializeApp(firebaseConfig);
-                        }
-                        const dbId = "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
-                        const customFirestore = firebase.app().firestore(dbId);
-                        customFirestore.doc("social_stats/latest").get()
-                            .then(doc => {
-                                if (doc.exists) {
-                                    resolve(doc.data());
-                                } else {
-                                    reject("Document not found in custom database");
+                    const projectId = "nice-momentum-trwfn";
+                    const dbId = "ai-studio-c02b7e6b-3a86-4bca-8854-20a8c0a0fc52";
+                    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/${dbId}/documents/social_stats/latest`;
+                    
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("HTTP error " + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(doc => {
+                            if (!doc || !doc.fields) {
+                                throw new Error("Invalid document structure from REST API");
+                            }
+                            const parsedData = {};
+                            for (const key in doc.fields) {
+                                const valObj = doc.fields[key];
+                                if (valObj.integerValue !== undefined) {
+                                    parsedData[key] = parseInt(valObj.integerValue, 10);
+                                } else if (valObj.doubleValue !== undefined) {
+                                    parsedData[key] = parseFloat(valObj.doubleValue);
+                                } else if (valObj.stringValue !== undefined) {
+                                    parsedData[key] = valObj.stringValue;
+                                } else if (valObj.booleanValue !== undefined) {
+                                    parsedData[key] = valObj.booleanValue;
                                 }
-                            })
-                            .catch(reject);
-                    } catch (e) {
-                        reject(e);
-                    }
+                            }
+                            resolve(parsedData);
+                        })
+                        .catch(err => {
+                            console.warn("Firestore REST fetch failed:", err);
+                            reject(err);
+                        });
                 });
             }
 
