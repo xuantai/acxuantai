@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Public profile social statistics
+    match /social_stats/{statsId} {
+      // Anyone is permitted to retrieve single document public social stats
+      allow get: if true;
+      
+      // Prohibit all write operations from client-side SDKs to preserve integrity
+      allow write: if false;
+    }
+  }
+}

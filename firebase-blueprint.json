@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "SocialStats": {
+      "title": "SocialStats",
+      "description": "Social media follower counts and statistics",
+      "type": "object",
+      "properties": {
+        "facebook": {
+          "type": "integer",
+          "description": "Facebook followers count"
+        },
+        "tiktok": {
+          "type": "integer",
+          "description": "TikTok followers count"
+        },
+        "youtube": {
+          "type": "integer",
+          "description": "YouTube subscribers count"
+        },
+        "lastUpdate": {
+          "type": "integer",
+          "format": "timestamp",
+          "description": "Timestamp of the last update in milliseconds"
+        }
+      },
+      "required": [
+        "facebook",
+        "tiktok",
+        "youtube",
+        "lastUpdate"
+      ]
+    }
+  },
+  "firestore": {
+    "social_stats": {
+      "schema": "SocialStats",
+      "description": "Historical and current recordings of social media follower counts"
+    }
+  }
+}
