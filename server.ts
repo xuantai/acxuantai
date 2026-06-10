@@ -151,9 +151,9 @@ let isUpdateInProgress = false;
 
 // Initial data
 const DEFAULT_STATS = {
-  facebook: 85219,
-  tiktok: 409600,
-  youtube: 18100,
+  facebook: 82190,
+  tiktok: 409505,
+  youtube: 15700,
   lastUpdate: 0
 };
 
@@ -477,6 +477,17 @@ async function fetchSocialStats(force = false) {
         if (updated) stats = updated;
       }
     }
+  }
+
+  // Always enforce manual overrides
+  if (process.env.OVERRIDE_FACEBOOK_STATS) {
+    stats.facebook = parseInt(process.env.OVERRIDE_FACEBOOK_STATS);
+  }
+  if (process.env.OVERRIDE_TIKTOK_STATS) {
+    stats.tiktok = parseInt(process.env.OVERRIDE_TIKTOK_STATS);
+  }
+  if (process.env.OVERRIDE_YOUTUBE_STATS) {
+    stats.youtube = parseInt(process.env.OVERRIDE_YOUTUBE_STATS);
   }
 
   return stats;

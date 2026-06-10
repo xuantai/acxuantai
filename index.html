@@ -393,15 +393,105 @@
         .new-blog-builder:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         
         /* Social Image Crop and Badge */
-        .social-img-wrap { position: relative; width: 100%; height: auto; max-height: 350px; overflow: hidden; border-radius: 20px 20px 0 0; background: #fff; }
-        .social-cover { width: 100%; height: auto; display: block; transition: 0.5s; object-fit: contain; max-height: 350px; } /* Uncropped */
+        .social-img-wrap { 
+            position: relative; 
+            width: 100%; 
+            height: auto; /* Desktop has full height, no cropping! */
+            overflow: hidden; 
+            border-radius: 20px 20px 0 0; 
+            background: #fff; 
+        }
+        .social-img-inner {
+            position: relative;
+            width: 100%;
+            height: auto;
+            container-type: inline-size; /* Enable container query width units on proportional container! */
+        }
+        .social-cover { 
+            width: 100%; 
+            height: auto; /* Render at natural aspect ratio */
+            display: block; 
+            transition: 0.5s; 
+        } /* Beautiful bottom crop */
         .new-blog-builder:hover .social-cover { transform: scale(1.02); }
         .social-id-badge { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); background: #fff; padding: 4px 15px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #1e293b; box-shadow: 0 4px 10px rgba(0,0,0,0.1); opacity: 0; transition: 0.3s; text-decoration: none !important; }
         .new-blog-builder:hover .social-id-badge { bottom: 15px; opacity: 1; border: 2px solid #10b981; color: #10b981; }
         .social-id-badge:hover { background: #10b981; color: #fff !important; transform: translateX(-50%) scale(1.1); }
+        
+        /* Dynamic Follower Overlays */
+        .tiktok-live-overlay-box {
+            position: absolute;
+            top: 55.4cqw; /* perfectly matches scanlines 277-329 to cover the follower stats dynamically on both PC and mobile */
+            left: 10cqw;
+            width: 80cqw;
+            height: 10.4cqw;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .tiktok-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            text-align: center;
+        }
+        .tiktok-num {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 700;
+            color: #161823;
+            font-size: 4.8cqw;
+            letter-spacing: -0.015em;
+            line-height: 1.2;
+        }
+        .tiktok-lbl {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            color: #8a8b90;
+            font-size: 3.1cqw;
+            letter-spacing: -0.012em;
+            line-height: 1.1;
+            margin-top: 0.4cqw;
+        }
+        .tiktok-divider {
+            width: 1px;
+            height: 4.5cqw;
+            background-color: rgba(22, 24, 35, 0.12);
+            align-self: center;
+        }
+ 
+        .fb-live-overlay-box {
+            position: absolute;
+            top: 83.2cqw; /* shifted down to align perfectly on top of the original text printed in 1.jpg */
+            left: 5cqw;
+            width: 90cqw;
+            height: 4.8cqw;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .fb-live-overlay-line {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 500;
+            color: #65676B;
+            font-size: 2.9cqw;
+            white-space: nowrap;
+            letter-spacing: 0.011em;
+            line-height: 1;
+        }
+
         @media (max-width: 767px) {
-            /* removed mobile height crop */
-            /* removed mobile object pos */
+            .social-img-wrap {
+                aspect-ratio: 500 / 517; /* Crops exactly 150px out of 667px height dynamically on mobile, preventing misalignment */
+                height: auto !important;
+            }
             .social-id-badge { bottom: 10px; opacity: 1; font-size: 11px; padding: 2px 10px; border: 1px solid #10b981; color: #10b981; }
             .grid-content { padding: 10px 15px 15px 15px; }
             .post-title-builder a { font-size: 18px; }
@@ -507,8 +597,8 @@
                 <div class="col-xl-2 col-lg-2 col-md-3 col-sm-8 navbar-logo-col">
                     <div class="logo">
                         <a href="#section1" class="logo-link">
-                            <img class="logo-white" src="/img/logo/logo-white.png" alt="logo" />
-                            <img class="logo-black" src="/img/logo/logo-black.png" alt="logo" />
+                            <img class="logo-white" src="https://acxuantai.com/img/logo/logo-white.png" alt="logo" />
+                            <img class="logo-black" src="https://acxuantai.com/img/logo/logo-black.png" alt="logo" />
                         </a>
                     </div>
                 </div>
@@ -530,7 +620,7 @@
                                     <li data-menuanchor="section10"><a href="#section10">Pikachu</a></li>
                                 </ul>
                             </li>
-                            <li class="lang-switch"><a href="#" onclick="toggleLanguage(); return false;" id="lang"><img style="width:24px;border-radius:2px" src="/img/flags/us.svg" alt="EN"></a></li>
+                            <li class="lang-switch"><a href="#" onclick="toggleLanguage(); return false;" id="lang"><img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -564,7 +654,7 @@
                         </div> 
                         <div class="col-md-6 order-1 order-md-2 text-center">
                             <div class="myphoto">
-                                <img src="/img/about-img4.png" alt="AC Xuân Tài">
+                                <img src="https://acxuantai.com/img/about-img4.png" alt="AC Xuân Tài">
                             </div>
                         </div>
                     </div>
@@ -578,7 +668,7 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-5">
-                            <div class="con-about text-center"><div class="about-img-wrapper"><img class="about-img" src="/img/about.jpg"></div></div>
+                            <div class="con-about text-center"><div class="about-img-wrapper"><img class="about-img" src="https://acxuantai.com/img/about.jpg"></div></div>
                         </div>
                         <div class="col-lg-6 offset-lg-1 mt-5 mt-lg-0 animate__animated animate__fadeInRight">
                             <div class="about-text">
@@ -792,56 +882,50 @@
                         <!-- Portfolio items list exactly like backup -->
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/01.jpg" alt="Portfolio 1">
+                                <img src="https://acxuantai.com/img/portfolio/01.jpg" alt="Portfolio 1">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=W0_x5xqWI-E" target="_blank">Đấu Trường Âm Nhạc</a></h2><p>Người Chơi</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/02.jpg" alt="Portfolio 2">
+                                <img src="https://acxuantai.com/img/portfolio/02.jpg" alt="Portfolio 2">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=3seFVv1Obic" target="_blank">Trai Đẹp vào Bếp</a></h2><p>Khách Mời</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/03.jpg" alt="Portfolio 3">
+                                <img src="https://acxuantai.com/img/portfolio/03.jpg" alt="Portfolio 3">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=bs5UOaPj0wA" target="_blank">Ký Ức Vui Vẻ</a></h2><p>Ca Sĩ Biểu Diễn</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/04.jpg" alt="Portfolio 4">
+                                <img src="https://acxuantai.com/img/portfolio/04.jpg" alt="Portfolio 4">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=nLsgBN0qyqk" target="_blank">Sàn Đấu Ca Từ</a></h2><p>Người Chơi</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/08.jpg" alt="Portfolio 8">
+                                <img src="https://acxuantai.com/img/portfolio/08.jpg" alt="Portfolio 8">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=5sfkgT-_LD8" target="_blank">MV Sau 30</a></h2><p>Giám Đốc Sản Xuất, Đạo Diễn, Diễn Viên, Ca Sĩ, Nhạc Sĩ</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/06.jpg" alt="Portfolio 6">
+                                <img src="https://acxuantai.com/img/portfolio/06.jpg" alt="Portfolio 6">
                                 <figcaption><h2><a href="https://youtu.be/QFiSU0f-pbc?t=1078" target="_blank">La La School</a></h2><p>Diễn Viên</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/05.jpg" alt="Portfolio 5">
+                                <img src="https://acxuantai.com/img/portfolio/05.jpg" alt="Portfolio 5">
                                 <figcaption><h2><a href="https://pops.vn/series/hoang-quy-muoi-5fae5a102b1bd200354e4c88" target="_blank">Hoàng Quý Muội</a></h2><p>Giám Đốc Âm Nhạc, Diễn Viên</p></figcaption>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/07.jpg" alt="Portfolio 7">
+                                <img src="https://acxuantai.com/img/portfolio/07.jpg" alt="Portfolio 7">
                                 <figcaption><h2><a href="https://www.youtube.com/watch?v=WPQSWe1cFxY&t=285s" target="_blank">Ca Sĩ Bí Ẩn</a></h2><p>Ca Sĩ Biểu Diễn</p></figcaption>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="protfolio-wrapper">
-                                <img src="/img/portfolio/09.jpg" alt="Portfolio 9">
-                                <figcaption><h2><a href="https://www.youtube.com/watch?v=qeIK3NzUcdQ" target="_blank">Biểu Diễn</a></h2><p>Ca Sĩ</p></figcaption>
                             </div>
                         </div>
                     </div>
@@ -855,39 +939,66 @@
                 <div class="container">
                     <div class="text-center mb-5">
                         <span class="text-gradient">Mạng Xã Hội</span>
-                        <h2>Tầm Ảnh Hưởng <span style="font-size: 13px; font-weight: normal; opacity: 0.7; vertical-align: middle;">(2)</span></h2>
+                        <h2>Tầm Ảnh Hưởng</h2>
                     </div>
-                        <div class="row">
+                    <div class="row">
                         <div class="col-md-4 mb-4">
                             <div class="new-blog-builder">
-                                <div class="social-img-wrap">
-                                    <img src="/img/blog/1.jpg" class="w-100 social-cover">
+                                <div class="social-img-wrap" id="fb-img-wrap">
+                                    <div class="social-img-inner">
+                                        <img src="https://acxuantai.com/img/blog/1.jpg" class="w-100 social-cover">
+                                        <div class="fb-live-overlay-box">
+                                            <div class="fb-live-overlay-line">
+                                                <span id="fb-overlay-count">82K</span> người theo dõi • 2,6K đang theo dõi • 4,1K bài viết
+                                            </div>
+                                        </div>
+                                    </div>
                                     <a href="https://facebook.com/nxuantai" target="_blank" class="social-id-badge"><i class="fab fa-facebook"></i> /nxuantai</a>
                                 </div>
                                 <div class="grid-content">
                                     <h2 class="font-weight-bold"><a href="https://facebook.com/nxuantai" class="text-gradient">Facebook</a></h2>
                                     <p><a href="https://facebook.com/nxuantai" target="_blank" class="text-dark font-weight-bold">Nguyễn Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
-                                    <p class="text-muted"><span class="social-count" id="live-fb" data-count="85219">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
+                                    <p class="text-muted"><span class="social-count" id="live-fb" data-count="82190">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="new-blog-builder">
-                                <div class="social-img-wrap">
-                                    <img src="/img/blog/2.jpg" class="w-100 social-cover">
+                                <div class="social-img-wrap" id="tiktok-img-wrap">
+                                    <div class="social-img-inner">
+                                        <img src="https://acxuantai.com/img/blog/2.jpg" class="w-100 social-cover">
+                                        <div class="tiktok-live-overlay-box">
+                                            <div class="tiktok-col">
+                                                <div class="tiktok-num">168</div>
+                                                <div class="tiktok-lbl">Đã follow</div>
+                                            </div>
+                                            <div class="tiktok-divider"></div>
+                                            <div class="tiktok-col">
+                                                <div class="tiktok-num" id="tiktok-overlay-count">409,5K</div>
+                                                <div class="tiktok-lbl">Follower</div>
+                                            </div>
+                                            <div class="tiktok-divider"></div>
+                                            <div class="tiktok-col">
+                                                <div class="tiktok-num">8,5Tr</div>
+                                                <div class="tiktok-lbl">Thích</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <a href="https://www.tiktok.com/@acxuantai" target="_blank" class="social-id-badge"><i class="fab fa-tiktok"></i> /@acxuantai</a>
                                 </div>
                                 <div class="grid-content">
                                     <h2 class="font-weight-bold"><a href="https://www.tiktok.com/@acxuantai" class="text-gradient">TikTok</a></h2>
                                     <p><a href="https://www.tiktok.com/@acxuantai" target="_blank" class="text-dark font-weight-bold">A.C Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
-                                    <p class="text-muted"><span class="social-count" id="live-tiktok" data-count="397500">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
+                                    <p class="text-muted"><span class="social-count" id="live-tiktok" data-count="409505">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="new-blog-builder">
                                 <div class="social-img-wrap">
-                                    <img src="/img/blog/3.jpg" class="w-100 social-cover">
+                                    <div class="social-img-inner">
+                                        <img src="https://acxuantai.com/img/blog/3.jpg" class="w-100 social-cover">
+                                    </div>
                                     <a href="https://www.youtube.com/nxuantai" target="_blank" class="social-id-badge"><i class="fab fa-youtube"></i> /@acxuantai</a>
                                 </div>
                                 <div class="grid-content">
@@ -1055,7 +1166,7 @@
         $(document).ready(function() {
             
             // Try Node.js endpoint first (for AI Studio Preview), fallback to PHP (for host)
-            window.liveStats = { facebook: 85210, tiktok: 400000, youtube: 15700 }; // fallback
+            window.liveStats = { facebook: 82190, tiktok: 409505, youtube: 15700 }; // fallback
             
             // Firebase Config for Client Firestore Direct Access
             const firebaseConfig = {
@@ -1066,6 +1177,36 @@
               messagingSenderId: "439820764953",
               appId: "1:439820764953:web:abcf8a172f204668bc2788"
             };
+
+            function formatTikTokOverlay(val) {
+                const kVal = val / 1000;
+                let formatted = kVal.toFixed(1).replace('.', ',');
+                if (formatted.endsWith(',0')) {
+                    formatted = formatted.substring(0, formatted.length - 2);
+                }
+                return formatted + 'K';
+            }
+
+            function formatFacebookOverlay(val) {
+                const kVal = Math.round(val / 1000);
+                return kVal + 'K';
+            }
+
+            function updateProfileOverlays() {
+                // Facebook
+                const fbText = $('#live-fb').text().replace(/,/g, '');
+                const fbVal = parseInt(fbText);
+                if (!isNaN(fbVal) && fbVal > 0) {
+                    $('#fb-overlay-count').text(formatFacebookOverlay(fbVal));
+                }
+
+                // TikTok
+                const tiktokText = $('#live-tiktok').text().replace(/,/g, '');
+                const tiktokVal = parseInt(tiktokText);
+                if (!isNaN(tiktokVal) && tiktokVal > 0) {
+                    $('#tiktok-overlay-count').text(formatTikTokOverlay(tiktokVal));
+                }
+            }
 
             function updateDOMStats() {
                 $('.social-count').each(function() {
@@ -1092,10 +1233,12 @@
                         easing: 'swing',
                         step: function (now) {
                             $this.text(Math.ceil(now).toLocaleString());
+                            updateProfileOverlays();
                         },
                         complete: function() {
                             $this.text(currentTarget.toLocaleString());
                             $this.data('live-val', currentTarget); // Update live value tracker so existing ticker uses the correct base
+                            updateProfileOverlays();
                             
                             // Setup live random increments only once
                             if (!$this.data('live-ticker-started')) {
@@ -1106,6 +1249,7 @@
                                         liveVal += Math.floor(Math.random() * 3) + 1;
                                         $this.data('live-val', liveVal);
                                         $this.text(liveVal.toLocaleString());
+                                        updateProfileOverlays();
                                         
                                         // Highlight effect when updated
                                         $this.css('color', '#10b981');
@@ -1713,7 +1857,7 @@
         
         // toggle the flag
         let headerEl = document.querySelector('#lang');
-        let iconHtml = isEn ? '<img style="width:24px;border-radius:2px" src="/img/flags/vn.svg" alt="VN">' : '<img style="width:24px;border-radius:2px" src="/img/flags/us.svg" alt="EN">';
+        let iconHtml = isEn ? '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/vn.svg" alt="VN">' : '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN">';
         if (headerEl) {
             headerEl.innerHTML = iconHtml;
         }
@@ -1737,7 +1881,7 @@
     // Set initial icon to US Flag
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.lang-switch a').forEach(el => {
-             el.innerHTML = '<img style="width:24px;border-radius:2px" src="/img/flags/us.svg" alt="EN">';
+             el.innerHTML = '<img style="width:24px;border-radius:2px" src="https://acxuantai.com/img/flags/us.svg" alt="EN">';
         });
     });
 </script>
