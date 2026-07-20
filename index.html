@@ -318,13 +318,43 @@
                 pointer-events: none;
             }
             
+            @keyframes tooltipPulse {
+                0%, 45% {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateX(0);
+                }
+                50%, 95% {
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateX(-5px);
+                }
+                100% {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateX(0);
+                }
+            }
+            
             #pp-nav li:hover::after,
             #pp-nav li.active::after,
             #pp-nav li:has(a.active)::after {
-                opacity: 1;
                 visibility: visible;
+                opacity: 1;
                 transform: translateX(0);
             }
+        }
+        
+        /* Restore default scroll on Admin CP */
+        body.is-admin-route,
+        body.is-admin-route html {
+            overflow: auto !important;
+            height: auto !important;
+        }
+        
+        /* Hide pagePiling navigation dots under Admin route */
+        body.is-admin-route #pp-nav {
+            display: none !important;
         }
         
         #minesweeper-grid { display: grid; justify-content: center; touch-action: manipulation; }
@@ -584,6 +614,11 @@
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
+        }
+
+        /* Custom timeline paragraph styling */
+        .resume-wrap p { 
+            white-space: pre-wrap !important; 
         }
     </style>
 </head>
@@ -957,7 +992,7 @@
                                 </div>
                                 <div class="grid-content">
                                     <h2 class="font-weight-bold"><a href="https://facebook.com/nxuantai" class="text-gradient">Facebook</a></h2>
-                                    <p><a href="https://facebook.com/nxuantai" target="_blank" class="text-dark font-weight-bold">Nguyễn Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
+                                    <p><a href="https://facebook.com/nxuantai" target="_blank" class="text-dark font-weight-bold" id="fb-profile-name">Nguyễn Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
                                     <p class="text-muted"><span class="social-count" id="live-fb" data-count="82190">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
                                 </div>
                             </div>
@@ -988,7 +1023,7 @@
                                 </div>
                                 <div class="grid-content">
                                     <h2 class="font-weight-bold"><a href="https://www.tiktok.com/@acxuantai" class="text-gradient">TikTok</a></h2>
-                                    <p><a href="https://www.tiktok.com/@acxuantai" target="_blank" class="text-dark font-weight-bold">A.C Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
+                                    <p><a href="https://www.tiktok.com/@acxuantai" target="_blank" class="text-dark font-weight-bold" id="tiktok-profile-name">A.C Xuân Tài</a> <i class="las la-check-circle text-primary"></i></p>
                                     <p class="text-muted"><span class="social-count" id="live-tiktok" data-count="409505">0</span> Followers <span class="badge badge-danger live-badge">LIVE</span></p>
                                 </div>
                             </div>
@@ -1003,7 +1038,7 @@
                                 </div>
                                 <div class="grid-content">
                                     <h2 class="font-weight-bold"><a href="https://www.youtube.com/nxuantai" class="text-gradient">YouTube</a></h2>
-                                    <p><a href="https://www.youtube.com/nxuantai" target="_blank" class="text-dark font-weight-bold">A.C Xuân Tài</a> <i class="las la-music text-danger"></i></p>
+                                    <p><a href="https://www.youtube.com/nxuantai" target="_blank" class="text-dark font-weight-bold" id="youtube-profile-name">A.C Xuân Tài</a> <i class="las la-music text-danger"></i></p>
                                     <p class="text-muted"><span class="social-count" id="live-youtube" data-count="15700">0</span> Subscribers <span class="badge badge-danger live-badge">LIVE</span></p>
                                 </div>
                             </div>
@@ -1022,43 +1057,43 @@
                         <h2>Tôi Có Thể Giúp Gì Cho Bạn?</h2>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-music fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Sáng Tác</h4>
                                 <p>Sáng tác bài hát, nhạc phim, nhạc quảng cáo.</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-microphone fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Biểu Diễn</h4>
                                 <p>Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp.</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-ad fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Quảng Bá</h4>
                                 <p>KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp.</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-play-circle fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Sản Xuất</h4>
                                 <p>Sản xuất MV, Phim, Viral Clips chuyên nghiệp.</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-camera fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Sáng Tạo</h4>
                                 <p>Sáng tạo nội dung trên đa nền tảng xã hội.</p>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4 text-center">
-                            <div class="service-box">
+                        <div class="col-12 col-md-4 mb-4 text-center">
+                            <div class="service-box h-100">
                                 <i class="las la-compact-disc fa-3x text-gradient"></i>
                                 <h4 class="mt-3 font-weight-bold">Âm Nhạc</h4>
                                 <p>Music Producer & Audio Production trọn gói.</p>
@@ -1096,7 +1131,7 @@
                             <div class="detail-share">
                                 <i class="las la-globe text-gradient"></i>
                                 <h5>Kho nhạc & Demo</h5>
-                                <p><a href="https://tài.com" target="_blank" class="font-weight-bold text-dark text-decoration-none">tài.com</a></p>
+                                <p><a href="https://tài.vn" target="_blank" class="font-weight-bold text-dark text-decoration-none">tài.vn</a></p>
                             </div>
                         </div>
                     </div>
@@ -1164,6 +1199,267 @@
 
     <script>
         $(document).ready(function() {
+            function formatYearTicker(yearStr) {
+                if (!yearStr) return '';
+                // Replace 4 digit numbers with <span class="year-count" data-count="NUM">NUM</span> for timeline animation
+                return yearStr.replace(/\b(\d{4})\b/g, function(match) {
+                    return '<span class="year-count" data-count="' + match + '">' + match + '</span>';
+                });
+            }
+
+            // Check if admin page and hide normal index content appropriately
+            if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+                $('#header-sticky').hide();
+                $('#main-wrapper').hide();
+                $('body').addClass('is-admin-route');
+            }
+
+            // Fetch and apply dynamic config
+            async function fetchAndApplyAdminConfig() {
+                try {
+                    const response = await fetch('/api/admin-config');
+                    if (!response.ok) return;
+                    const config = await response.json();
+                    if (!config) return;
+
+                    // 1. Title
+                    if (config.websiteTitle) {
+                        document.title = config.websiteTitle;
+                    }
+
+                    // 2. Favicon
+                    if (config.faviconUrl) {
+                        $('link[rel*="icon"]').attr('href', config.faviconUrl);
+                    }
+
+                    // 3. Logo
+                    if (config.logoUrl) {
+                        $('img.logo-black').attr('src', config.logoUrl);
+                        if (config.logoWhiteUrl) {
+                            $('img.logo-white').attr('src', config.logoWhiteUrl);
+                        } else {
+                            $('img.logo-white').attr('src', config.logoUrl);
+                        }
+                    }
+
+                    // 4. Portrait & Cover Image
+                    if (config.coverImageUrl) {
+                        $('.myphoto img').attr('src', config.coverImageUrl);
+                        $('.about-img').attr('src', config.coverImageUrl);
+                    }
+
+                    // 5. Artist Name
+                    if (config.artistName) {
+                        $('.sparkle-hover').text(config.artistName);
+                    }
+
+                    // 6. Bio/Descriptions
+                    if (config.bio1 || config.bio2) {
+                        $('.banner_inner p.lead').html(
+                            (config.bio1 || '') + ' <br> <strong>' + (config.bio2 || '') + '</strong>'
+                        );
+                    }
+
+                    // 7. Typewriter Roles
+                    if (config.roles && config.roles.length) {
+                        window.customRoles = config.roles.filter(Boolean);
+                    }
+
+                    // 8. Education
+                    if (config.education && config.education.length) {
+                        var $eduParent = $('#HocVan').parent();
+                        if ($eduParent.length) {
+                            $eduParent.find('.resume-wrap').remove();
+                            config.education.forEach(function(item) {
+                                var yearHtml = formatYearTicker(item.year || '');
+                                var $el = $('<div class="resume-wrap edu mb-4">' +
+                                            '  <div class="icon"><i class="fa fa-graduation-cap"></i></div>' +
+                                            '  <div class="text">' +
+                                            '    <span class="date">' + yearHtml + '</span>' +
+                                            '    <h3 class="h5 mt-2">' + (item.title || '') + '</h3>' +
+                                            '    <p class="text-muted">' + (item.desc || '') + '</p>' +
+                                            '  </div>' +
+                                            '</div>');
+                                $eduParent.append($el);
+                            });
+                        }
+                    }
+
+                    // 9. Experience
+                    if (config.experience && config.experience.length) {
+                        var $expParent = $('h2:contains("Kinh Nghiệm")').parent();
+                        if (!$expParent.length) {
+                            $expParent = $('.col-md-6:has(h2:contains("Kinh Nghiệm"))');
+                        }
+                        if ($expParent.length) {
+                            $expParent.find('.resume-wrap').remove();
+                            config.experience.forEach(function(item) {
+                                var yearHtml = formatYearTicker(item.year || '');
+                                var $el = $('<div class="resume-wrap exp mb-4">' +
+                                            '  <div class="icon"><i class="fa fa-briefcase"></i></div>' +
+                                            '  <div class="text">' +
+                                            '    <span class="date">' + yearHtml + '</span>' +
+                                            '    <h3 class="h5 mt-2">' + (item.title || '') + '</h3>' +
+                                            '    <p class="text-muted">' + (item.desc || '') + '</p>' +
+                                            '  </div>' +
+                                            '</div>');
+                                $expParent.append($el);
+                            });
+                        }
+                    }
+
+                    // Immediately re-observe newly created timeline items for scroll animations
+                    if (window.timelineObserver) {
+                        $('.resume-wrap').each(function() {
+                            window.timelineObserver.observe(this);
+                        });
+                    }
+
+                    // 10. Portfolio (Hình Ảnh)
+                    if (config.portfolio && config.portfolio.length) {
+                        var $grid = $('#section3 .row');
+                        if ($grid.length) {
+                            $grid.empty();
+                            config.portfolio.forEach(function(item, idx) {
+                                var $itemEl = $('<div class="col-md-4">' +
+                                                '  <div class="protfolio-wrapper">' +
+                                                '    <img src="' + (item.imageUrl || '') + '" alt="Portfolio ' + (idx + 1) + '">' +
+                                                '    <figcaption>' +
+                                                '      <h2><a href="' + (item.url || '#') + '" target="_blank">' + (item.title || '') + '</a></h2>' +
+                                                '      <p>' + (item.role || '') + '</p>' +
+                                                '    </figcaption>' +
+                                                '  </div>' +
+                                                '</div>');
+                                $grid.append($itemEl);
+                            });
+                        }
+                    }
+
+                    // 11. Social Media Links
+                    if (config.socials) {
+                        if (config.socials.facebook) {
+                            var fbUrl = "https://facebook.com/" + config.socials.facebook;
+                            $('a[href*="facebook.com"]').attr('href', fbUrl);
+                            $('.social-id-badge:has(.fa-facebook)').html('<i class="fab fa-facebook"></i> /' + config.socials.facebook).attr('href', fbUrl);
+                            $('h2:has(a[href*="facebook.com"]) a').attr('href', fbUrl);
+                            $('p:has(a[href*="facebook.com"]) a').attr('href', fbUrl);
+                        }
+                        if (config.socials.facebookName) {
+                            $('#fb-profile-name').text(config.socials.facebookName);
+                        }
+                        if (config.socials.tiktok) {
+                            var ttVal = config.socials.tiktok;
+                            if (!ttVal.startsWith('@')) {
+                                ttVal = '@' + ttVal;
+                            }
+                            var ttUrl = "https://tiktok.com/" + ttVal;
+                            $('a[href*="tiktok.com"]').attr('href', ttUrl);
+                            $('.social-id-badge:has(.fa-tiktok)').html('<i class="fab fa-tiktok"></i> /' + ttVal).attr('href', ttUrl);
+                            $('h2:has(a[href*="tiktok.com"]) a').attr('href', ttUrl);
+                            $('p:has(a[href*="tiktok.com"]) a').attr('href', ttUrl);
+                        }
+                        if (config.socials.tiktokName) {
+                            $('#tiktok-profile-name').text(config.socials.tiktokName);
+                        }
+                        if (config.socials.youtube) {
+                            var ytUrl = "https://youtube.com/" + config.socials.youtube;
+                            $('a[href*="youtube.com"]').attr('href', ytUrl);
+                            $('.social-id-badge:has(.fa-youtube)').html('<i class="fab fa-youtube"></i> /' + config.socials.youtube).attr('href', ytUrl);
+                            $('h2:has(a[href*="youtube.com"]) a').attr('href', ytUrl);
+                            $('p:has(a[href*="youtube.com"]) a').attr('href', ytUrl);
+                        }
+                        if (config.socials.youtubeName) {
+                            $('#youtube-profile-name').text(config.socials.youtubeName);
+                        }
+                    }
+
+                    // 12. Services (Dịch Vụ)
+                    if (config.services && config.services.length) {
+                        var serviceIcons = [
+                            'la-music',
+                            'la-microphone',
+                            'la-ad',
+                            'la-play-circle',
+                            'la-camera',
+                            'la-compact-disc',
+                            'la-sliders-h',
+                            'la-headphones',
+                            'la-user-graduate'
+                        ];
+                        var $servicesGrid = $('#section5 .row');
+                        if ($servicesGrid.length) {
+                            $servicesGrid.empty();
+                            var totalServices = config.services.length;
+                            var desktopColClass = 'col-md-4';
+                            if (totalServices % 2 !== 0) {
+                                desktopColClass = 'col-md-4';
+                            } else if (totalServices % 3 !== 0 && totalServices % 2 === 0) {
+                                desktopColClass = 'col-md-6';
+                            }
+                            
+                            config.services.forEach(function(item, idx) {
+                                var iconClass = serviceIcons[idx] || 'la-star';
+                                var $sEl = $('<div class="col-12 ' + desktopColClass + ' mb-4 text-center">' +
+                                             '  <div class="service-box h-100">' +
+                                             '    <i class="las ' + iconClass + ' fa-3x text-gradient"></i>' +
+                                             '    <h4 class="mt-3 font-weight-bold">' + (item.name || '') + '</h4>' +
+                                             '    <p>' + (item.desc || '') + '</p>' +
+                                             '  </div>' +
+                                             '</div>');
+                                $servicesGrid.append($sEl);
+                            });
+                        }
+                    }
+
+                    // 13. Contact Info
+                    if (config.contacts) {
+                        var $contactGrid = $('#section6 .row');
+                        if ($contactGrid.length) {
+                            $contactGrid.empty();
+                            var sdtEl = $('<div class="col-md-6 col-lg-6 mb-4 text-center">' +
+                                          '  <div class="detail-share">' +
+                                          '    <i class="la la-phone-volume text-gradient"></i>' +
+                                          '    <h5 class="font-weight-bold">SĐT</h5>' +
+                                          '    <p class="mb-0 fs-5">' + (config.contacts.phone || '085.6600666') + '</p>' +
+                                          '  </div>' +
+                                          '</div>');
+                            $contactGrid.append(sdtEl);
+                            
+                            var emailEl = $('<div class="col-md-6 col-lg-6 mb-4 text-center">' +
+                                            '  <div class="detail-share">' +
+                                            '    <i class="la la-envelope text-gradient"></i>' +
+                                            '    <h5 class="font-weight-bold">Email</h5>' +
+                                            '    <p class="mb-0 fs-5">' + (config.contacts.email || 'hi@acxuantai.com') + '</p>' +
+                                            '  </div>' +
+                                            '</div>');
+                            $contactGrid.append(emailEl);
+                            
+                            if (config.contacts.customOptions && config.contacts.customOptions.length > 0) {
+                                config.contacts.customOptions.forEach(function(opt) {
+                                    var customUrl = opt.url && opt.url.includes('.') && !opt.url.startsWith('http') ? 'https://' + opt.url : (opt.url || '#');
+                                    var customContent = customUrl !== '#' 
+                                        ? '<a href="' + customUrl + '" target="_blank" class="font-weight-bold text-dark text-decoration-none fs-5">' + opt.desc + '</a>'
+                                        : '<span class="fs-5">' + opt.desc + '</span>';
+                                        
+                                    var customEl = $('<div class="col-md-6 col-lg-6 mb-4 text-center">' +
+                                                     '  <div class="detail-share">' +
+                                                     '    <i class="las la-globe text-gradient"></i>' +
+                                                     '    <h5 class="font-weight-bold">' + opt.title + '</h5>' +
+                                                     '    <p class="mb-0">' + customContent + '</p>' +
+                                                     '  </div>' +
+                                                     '</div>');
+                                    $contactGrid.append(customEl);
+                                });
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.log('Error applying dynamic configurations', e);
+                }
+            }
+
+            // Immediately dynamic fetch
+            fetchAndApplyAdminConfig();
             
             // Try Node.js endpoint first (for AI Studio Preview), fallback to PHP (for host)
             window.liveStats = { facebook: 82190, tiktok: 409505, youtube: 15700 }; // fallback
@@ -1326,6 +1622,10 @@
                     $('#live-tiktok').attr('data-count', window.liveStats.tiktok);
                     $('#live-youtube').attr('data-count', window.liveStats.youtube);
                     
+                    if (data.facebookName) $('#fb-profile-name').text(data.facebookName);
+                    if (data.tiktokName) $('#tiktok-profile-name').text(data.tiktokName);
+                    if (data.youtubeName) $('#youtube-profile-name').text(data.youtubeName);
+                    
                     // Trigger DOM updates immediately to correct targets
                     updateDOMStats();
                 } else {
@@ -1338,7 +1638,8 @@
             loadLiveStats().catch(err => console.log("Failed to load live stats:", err));
                 
             // PagePiling (Quản lý scroll từng trang)
-            if ($.fn.pagepiling) {
+            var isAdminRoute = (window.location.pathname === '/admin' || window.location.hash === '#admin');
+            if ($.fn.pagepiling && !isAdminRoute) {
                 $('#main-wrapper').pagepiling({
                     menu: '#nav-13',
                     direction: 'horizontal',
@@ -1424,6 +1725,8 @@
                 });
             }, { threshold: 0.2 });
 
+            window.timelineObserver = timelineObserver;
+
             $('.resume-wrap').each(function() {
                 timelineObserver.observe(this);
             });
@@ -1435,7 +1738,8 @@
             let isDeleting = false;
             let typeTimer = null;
             function runTypewriter() {
-                const currentWord = twWords[twIndex];
+                const words = (window.customRoles && window.customRoles.length) ? window.customRoles : twWords;
+                const currentWord = words[twIndex % words.length];
                 if (isDeleting) {
                     twCharIndex--;
                 } else {
@@ -1456,7 +1760,8 @@
                     isDeleting = true;
                 } else if (isDeleting && twCharIndex === 0) {
                     isDeleting = false;
-                    twIndex = (twIndex + 1) % twWords.length;
+                    const wordsList = (window.customRoles && window.customRoles.length) ? window.customRoles : twWords;
+                    twIndex = (twIndex + 1) % wordsList.length;
                     typingSpeed = 500;
                 }
                 typeTimer = setTimeout(runTypewriter, typingSpeed);

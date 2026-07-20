@@ -9,7 +9,16 @@ service cloud.firestore {
     // 2. Public profile social statistics
     match /social_stats/{statsId} {
       // Anyone is permitted to retrieve single document public social stats
-      allow get: if true;
+      allow read: if true;
+      
+      // Prohibit unauthorized writes, allow writes with the direct backend server token
+      allow write: if request.resource.data.writeToken == 'e9b1d120-fbc0-4c8d-b089-a29d6756811e';
+    }
+
+    // 3. Admin configuration
+    match /configs/{configId} {
+      // Anyone is permitted to retrieve single document public configurations
+      allow read: if true;
       
       // Prohibit unauthorized writes, allow writes with the direct backend server token
       allow write: if request.resource.data.writeToken == 'e9b1d120-fbc0-4c8d-b089-a29d6756811e';

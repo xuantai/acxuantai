@@ -1,0 +1,212 @@
+{
+  "bio2": "Founder & CEO of XT Production",
+  "artistName": "A.C Xuân Tài",
+  "websiteTitle": "A.C Xuân Tài - Portfolio",
+  "contacts": {
+    "email": "hi@acxuantai.com",
+    "customOptions": [
+      {
+        "url": "https://tài.vn",
+        "desc": "tài.vn",
+        "title": "Kho nhạc & Demo"
+      }
+    ],
+    "phone": "085.6600666"
+  },
+  "socials": {
+    "youtubeName": "",
+    "facebook": "nxuantai",
+    "facebookFollowers": 82000,
+    "youtubeFollowers": 1,
+    "tiktokFollowers": 409500,
+    "facebookName": "",
+    "tiktok": "@acxuantai",
+    "youtube": "@acxuantai"
+  },
+  "education": [
+    {
+      "title": "THPT Chuyên Phan Bội Châu - Nghệ An",
+      "desc": "Học sinh lớp chuyên Tin (A2k38), tại trường THPT chuyên Phan Bội Châu - Nghệ An",
+      "year": "2009 - 2012"
+    },
+    {
+      "year": "2012 - 2016",
+      "desc": "Sinh viên ngành Kỹ Thuật Phần Mềm, Đại Học FPT Hà Nội với Học Bổng Toàn Phần. Tốt nghiệp năm 2016.",
+      "title": "Đại Học FPT"
+    },
+    {
+      "title": "Thực Tập Tại Nhật Bản",
+      "year": "05/2015 - 09/2015",
+      "desc": "Thực tập tại công ty Suzuki Shouten ở Osaka, Nhật Bản trong vai trò Web Developer."
+    },
+    {
+      "title": "Trao đổi sinh viên tại ĐH Bunkyo",
+      "year": "10/2014",
+      "desc": "Tham gia chương trình trao đổi sinh viên tại trường ĐH Bunkyo ở Tokyo, Nhật Bản."
+    }
+  ],
+  "logoWhiteUrl": "https://acxuantai.com/img/logo/logo-white.png",
+  "roles": [
+    "Ca nhạc sĩ",
+    "Music Producer",
+    "MV/ Film/ TVC Producer",
+    "Content Creator",
+    "KOL"
+  ],
+  "logoUrl": "https://acxuantai.com/img/logo/logo-black.png",
+  "portfolio": [
+    {
+      "url": "https://www.youtube.com/watch?v=W0_x5xqWI-E",
+      "imageUrl": "https://acxuantai.com/img/portfolio/01.jpg",
+      "role": "Người Chơi",
+      "title": "Đấu Trường Âm Nhạc"
+    },
+    {
+      "imageUrl": "https://acxuantai.com/img/portfolio/02.jpg",
+      "title": "Trai Đẹp vào Bếp",
+      "role": "Khách Mời",
+      "url": "https://www.youtube.com/watch?v=3seFVv1Obic"
+    },
+    {
+      "role": "Ca Sĩ Biểu Diễn",
+      "title": "Ký Ức Vui Vẻ",
+      "imageUrl": "https://acxuantai.com/img/portfolio/03.jpg",
+      "url": "https://www.youtube.com/watch?v=bs5UOaPj0wA"
+    },
+    {
+      "role": "Người Chơi",
+      "imageUrl": "https://acxuantai.com/img/portfolio/04.jpg",
+      "title": "Sàn Đấu Ca Từ",
+      "url": "https://www.youtube.com/watch?v=nLsgBN0qyqk"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=5sfkgT-_LD8",
+      "role": "Giám Đốc Sản Xuất, Đạo Diễn, Diễn Viên, Ca Sĩ, Nhạc Sĩ",
+      "title": "MV Sau 30",
+      "imageUrl": "https://acxuantai.com/img/portfolio/08.jpg"
+    },
+    {
+      "url": "https://youtu.be/QFiSU0f-pbc?t=1078",
+      "imageUrl": "https://acxuantai.com/img/portfolio/06.jpg",
+      "role": "Diễn Viên",
+      "title": "La La School"
+    },
+    {
+      "imageUrl": "https://acxuantai.com/img/portfolio/05.jpg",
+      "title": "Hoàng Quý Muội",
+      "role": "Giám Đốc Âm Nhạc, Diễn Viên",
+      "url": "https://pops.vn/series/hoang-quy-muoi-5fae5a102b1bd200354e4c88"
+    },
+    {
+      "imageUrl": "https://acxuantai.com/img/portfolio/07.jpg",
+      "role": "Ca Sĩ Biểu Diễn",
+      "title": "Ca Sĩ Bí Ẩn",
+      "url": "https://www.youtube.com/watch?v=WPQSWe1cFxY&t=285s"
+    }
+  ],
+  "services": [
+    {
+      "name": "Sáng Tác",
+      "desc": "Sáng tác bài hát, nhạc phim, nhạc quảng cáo."
+    },
+    {
+      "desc": "Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp.",
+      "name": "Biểu Diễn"
+    },
+    {
+      "name": "Quảng Bá",
+      "desc": "KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp."
+    },
+    {
+      "desc": "Sản xuất MV, Phim, Viral Clips chuyên nghiệp.",
+      "name": "Sản Xuất"
+    },
+    {
+      "desc": "Sáng tạo nội dung trên đa nền tảng xã hội.",
+      "name": "Sáng Tạo"
+    },
+    {
+      "name": "Âm Nhạc",
+      "desc": "Music Producer & Audio Production trọn gói."
+    },
+    {
+      "desc": "Hòa âm phối khí chuyên nghiệp cho ca sĩ.",
+      "name": "Hòa Âm Phối Khí"
+    },
+    {
+      "name": "Thu Âm",
+      "desc": "Thu âm phòng thu chất lượng cao, hậu kỳ chuyên sâu."
+    },
+    {
+      "name": "Đào Tạo",
+      "desc": "Đạo tạo sản xuất âm nhạc và thanh họa."
+    }
+  ],
+  "coverImageUrl": "https://acxuantai.com/img/about-img4.png",
+  "bio1": "Singer-songwriter, Music Producer",
+  "games": {
+    "game2048Name": "2048",
+    "pikachuName": "Pikachu",
+    "minesweeperName": "Dò Mìn",
+    "tetrisName": "Xếp Hình"
+  },
+  "floatingButton": {
+    "text": "Kho Nhạc của A.C Xuân Tài",
+    "url": "https://tài.vn",
+    "icon": "music"
+  },
+  "coverImageTransparent": "",
+  "experience": [
+    {
+      "year": "2025",
+      "desc": "Sáng tác, sản xuất và thể hiện ca khúc \"Một Thời Khắc Khác - A.C Xuân Tài, DT Tập Rap\" nhạc phim điện ảnh Hoàng Tử Quỷ ( Đạo diễn: Trần Hữu Tấn, Diễn viên: Anh Tú Atus, Lương Thế Thành, Hoàng Linh Chi...), khởi chiếu từ 5.12.2025 tại các rạp trên toàn quốc..",
+      "title": "Nhạc Phim điện ảnh Hoàng Tử Quỷ"
+    },
+    {
+      "year": "2023",
+      "desc": "Sáng tác ca khúc \"Vì Em Chưa Bao Giờ Khóc - Hà Nhi\", giữ vị trí Top 1 Trending Youtube Music Việt Nam trong 2 tuần.",
+      "title": "Top 1 Trending Youtube Music Việt nam"
+    },
+    {
+      "title": "Vinhomes Ca",
+      "desc": "Sáng tác ca khúc \"Vươn Xa Cùng Thế Giới\", Giải nhì cuộc thi Sáng Tác Ca Khúc 30 năm Vingroup, giải thưởng 500 triệu đồng. Ca khúc sau đó được sử dụng làm Vinhomes Ca",
+      "year": "2023"
+    },
+    {
+      "title": "Ca Khúc Chủ Đề Running Man Vietnam ss2",
+      "year": "2021",
+      "desc": "Sáng Tác, Thể hiện và Sản xuất Ca khúc chủ đề \"Chạy Đi\" của Running Man Vietnam season 2 - Chơi Là Chạy. Giải Nhất cuộc thi sáng tác Themes Song."
+    },
+    {
+      "desc": "Giám Đốc Âm nhạc dự án Web Drama lớn của đạo diễn Luk Van - \"Hoàng Quý Muội\", Sáng Tác và Sản Xuất toàn bộ soundtrack trong phim, trong đó có 3 ca khúc OST.\nBỏ Lỡ Nhau Rồi - Hải Nam\nNếu Chúng Ta Chưa Từng Gặp - A.C Xuân Tài\nLà Vì Anh - Mai Fin ft. A.C Xuân Tài",
+      "year": "2020",
+      "title": "Giám Đốc Âm Nhạc - Web Drama Hoàng Quý Muội"
+    },
+    {
+      "year": "2019-nay",
+      "desc": "Giám Đốc Sản Xuất và Đạo Diễn các MV như:\n7 Tỷ Người - A.C Xuân Tài ft. Deus Tiến Đạt (2019)\nPhải Chăng Trưởng Thành Là Chia Ly - A.C Xuân Tài (2020)\nSau 30 - A.C Xuân Tài ft. Mina Phan, Duy Andy (2021)\nAnh Đã Tìm Được Em - A.C Xuân Tài (2022)\nChầm Chậm Cùng Anh - A.C Xuân Tài (2022)\n...\nvới rất nhiều nghệ sĩ khách mời nổi tiếng như: Lynk Lee, Đức SVM, Lê Lý Lan Hương, Lương Huy, Thúy Kiều FAPTV, Yuno Bigboi, Củ Tỏi, Zero9, ...",
+      "title": "Giám Đốc Sản Xuất, Đạo Diễn MV"
+    },
+    {
+      "desc": "Là khách mời của rât nhiều Game Show truyền hình nổi tiếng như:\nKý Ức Vui Vẻ (ss3 #10)\nKhúc Hát Se Duyên (#13)\nSàn Đấu Ca Từ (ss3 #12, ss4 #14)\nĐấu Trường Âm Nhạc (ss3 #11)\nAi Là Triệu Phú (17/6/2025)\nCa Sĩ Bí Ẩn (ss3 #3)\nGiọng Ca Bí Ẩn (ss2 #6)\nBản Lĩnh Ngôi Sao (#129)\nNgười Hát Tình Ca 2024 (#6)\nKhuôn Mặt Đáng Tin (#16)\nĐối Mặt Thời Gian (ss1 #4)\nChọn Đâu Cho Đúng (ss3 #6)\nTrai Đẹp Vào Bếp (#18)\nTình Khúc Giao Mùa (ss2 #4)\nTặng Em Một Bản Tình Ca (#3)\n...",
+      "year": "2018-nay",
+      "title": "Khách Mời Game Show"
+    },
+    {
+      "year": "2017-nay",
+      "desc": "Sáng tác, hát và sản xuất OST cho rất nhiều Web Drama triệu view như: SVM Mì Tôm, Tình Đầu Đại Ca, Năm Đó Chúng Ta 18, Tự Giác Yêu Anh, Thiên Ân Phiêu Lưu Ký, Vợ Chồng Sửu Nhi, WHO ARE YOU...",
+      "title": "Sản Xuất nhạc Phim Web Drama"
+    },
+    {
+      "desc": "Sáng tác ca khúc \"Cơn Mưa Tuổi Thanh Xuân - Lynk Lee\", OST Phim Điện Ảnh \"Tháng 5 Để Dành\" của Đạo diễn Lê Hà Nguyên.",
+      "year": "2016",
+      "title": "Nhạc phim Điện Ảnh \"Tháng 5 Để Dành\""
+    },
+    {
+      "year": "2015-nay",
+      "desc": "Sáng Tác, Thể hiện và Sản xuất các ca khúc nhạc Thương Hiệu, nhạc Quảng Cáo cho các Thương Hiệu lớn nhỏ như: Nội Thất Ahome, Đại Học FPT, Đại Học Văn Hiến, GIZ, Sumo Yakiniku, Kichi Kichi...",
+      "title": "Sản Xuất Nhạc Quảng Cáo, Nhạc Thương Hiệu"
+    }
+  ],
+  "faviconUrl": "https://acxuantai.com/favicon.ico"
+}

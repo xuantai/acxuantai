@@ -114,7 +114,7 @@ pm2 save
 
 ### Bước 4: Cấu hình Nginx làm Reverse Proxy để gắn Tên miền (Domain)
 
-Để người dùng truy cập trực tiếp bằng tên miền của bạn (ví dụ: `acxuantai.com` hoặc `tài.com`) thế cho địa chỉ cổng `http://IP:2000`:
+Để người dùng truy cập trực tiếp bằng tên miền của bạn (ví dụ: `acxuantai.com` hoặc `tài.vn`) thế cho địa chỉ cổng `http://IP:2000`:
 
 #### 1. Cài đặt Nginx:
 ```bash
@@ -130,7 +130,7 @@ sudo nano /etc/nginx/sites-available/acxuantai
 ```nginx
 server {
     listen 80;
-    server_name acxuantai.com www.acxuantai.com tài.com xn--ti-yia.com www.tài.com www.xn--ti-yia.com; # Hỗ trợ cả tên miền quốc tế và mã hóa tiếng Việt
+    server_name acxuantai.com www.acxuantai.com tài.vn xn--ti-yia.com www.tài.vn www.xn--ti-yia.com; # Hỗ trợ cả tên miền quốc tế và mã hóa tiếng Việt
 
     location / {
         proxy_pass http://127.0.0.1:2000; # Chuyển hướng các request về NodeJS App chạy trên Port 2000
@@ -164,7 +164,7 @@ Bảo vệ kết nối bằng chứng chỉ HTTPS bảo mật cao cho cả hai t
 sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d acxuantai.com -d www.acxuantai.com -d xn--ti-yia.com -d www.xn--ti-yia.com
 ```
-*Lưu ý*: Với tên miền có dấu như `tài.com`, khi thao tác thiết lập chứng chỉ SSL hoặc DNS, hãy luôn sử dụng định dạng tên miền mã hóa Punycode (bắt đầu bằng `xn--`, ví dụ: `xn--ti-yia.com`).
+*Lưu ý*: Với tên miền có dấu như `tài.vn`, khi thao tác thiết lập chứng chỉ SSL hoặc DNS, hãy luôn sử dụng định dạng tên miền mã hóa Punycode (bắt đầu bằng `xn--`, ví dụ: `xn--ti-yia.com`).
 
 ---
 

@@ -29,12 +29,32 @@
         "youtube",
         "lastUpdate"
       ]
+    },
+    "AdminConfig": {
+      "title": "AdminConfig",
+      "description": "Admin configuration containing website branding, bio, and social info",
+      "type": "object",
+      "properties": {
+        "websiteTitle": { "type": "string" },
+        "artistName": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "logoWhiteUrl": { "type": "string" },
+        "faviconUrl": { "type": "string" },
+        "coverImageUrl": { "type": "string" },
+        "bio1": { "type": "string" },
+        "bio2": { "type": "string" },
+        "writeToken": { "type": "string" }
+      }
     }
   },
   "firestore": {
     "social_stats": {
       "schema": "SocialStats",
       "description": "Historical and current recordings of social media follower counts"
+    },
+    "configs": {
+      "schema": "AdminConfig",
+      "description": "Branding and customized static info for the website"
     }
   }
 }

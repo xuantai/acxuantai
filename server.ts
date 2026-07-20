@@ -75,7 +75,8 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   throw new Error(JSON.stringify(errInfo));
 }
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const RECORDS_DIR = path.join(process.cwd(), "records");
 if (!fs.existsSync(RECORDS_DIR)) {
@@ -96,6 +97,46 @@ app.get("/api/records/:game", (req, res) => {
         }
     }
     res.json([]);
+});
+
+app.post("/api/remove-bg", async (req, res) => {
+  try {
+     const apiKey = process.env.REMOVE_BG_API_KEY;
+    if (!apiKey) {
+      return res.status(400).json({ error: 'Chưa cấu hình REMOVE_BG_API_KEY trong biến môi trường hệ thống. Vui lòng thêm biến môi trường này và thử lại.' });
+    }
+    const { imageB64 } = req.body;
+    if (!imageB64) {
+      return res.status(400).json({ error: 'Missing image data' });
+    }
+    const base64Data = imageB64.replace(/^data:image\/\w+;base64,/, "");
+    
+    const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+      method: 'POST',
+      headers: {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        image_file_b64: base64Data,
+        size: 'auto',
+        format: 'png'
+      })
+    });
+
+    if (!response.ok) {
+       const text = await response.text();
+       throw new Error('remove.bg API error: ' + response.statusText + ' ' + text);
+    }
+
+    const data = await response.json();
+    res.json({ result: `data:image/png;base64,${data.data.result_b64}` });
+
+  } catch (err: any) {
+    console.error('remove.bg error:', err);
+    res.status(500).json({ error: err.message || 'Error communicating with remove.bg' });
+  }
 });
 
 app.post("/api/records/:game", (req, res) => {
@@ -146,365 +187,539 @@ app.post("/api/records/:game", (req, res) => {
     return res.json({ success: true, isTop10, records: top10 });
 });
 
-const SOCIAL_STATS_FILE = path.join(RECORDS_DIR, "777.json");
-let isUpdateInProgress = false;
+// SOCIAL STATS API WITH LIVE SCRAPING & ADMIN CONFIG TEMPORARY FALLBACK
+let liveSocialStats = {
+    facebook: null as number | null,
+    facebookName: "" as string,
+    tiktok: null as number | null,
+    tiktokName: "" as string,
+    youtube: null as number | null,
+    youtubeName: "" as string,
+    facebookId: "",
+    tiktokId: "",
+    youtubeId: "",
+    lastChecked: 0
+};
+let isFetchRunning = false;
 
-// Initial data
-const DEFAULT_STATS = {
-  facebook: 82190,
-  tiktok: 409505,
-  youtube: 15700,
-  lastUpdate: 0
+const decodeHtmlEntities = (text: string) => {
+    return text.replace(/&#([0-9]{1,3});/gi, (match, numStr) => {
+        return String.fromCharCode(parseInt(numStr, 10));
+    }).replace(/&#x([0-9a-f]{1,4});/gi, (match, hexStr) => {
+        return String.fromCharCode(parseInt(hexStr, 16));
+    }).replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 };
 
-// RapidAPI Fetch logic
-async function getStatsFromRapidAPI(currentStats?: any) {
-  const fbKey = process.env.RAPIDAPI_FB_KEY || process.env.RAPIDAPI_KEY || "c6c8460a53msh54cce4eba86a610p16911bjsn6ef018aaca1d";
-  const ytKey = process.env.RAPIDAPI_YT_KEY || process.env.RAPIDAPI_KEY || "c6c8460a53msh54cce4eba86a610p16911bjsn6ef018aaca1d";
-  
-  const stats = currentStats ? { ...currentStats } : { ...DEFAULT_STATS };
-  const headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-  };
+async function updateSocialStatsLive(fbId: string, ttId: string, ytId: string) {
+    if (isFetchRunning) return;
+    isFetchRunning = true;
+    console.log(`Starting background social statistics scrape for: FB(${fbId}), TT(${ttId}), YT(${ytId})`);
 
-  try {
-    console.log("Fetching fresh stats from RapidAPI...");
+    const headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+    };
 
-    // 1. YouTube Stats Override / Fetch
-    if (process.env.OVERRIDE_YOUTUBE_STATS) {
-      stats.youtube = parseInt(process.env.OVERRIDE_YOUTUBE_STATS);
-      console.log(`YouTube Stats (override): ${stats.youtube}`);
-    } else {
-      try {
-        let ytSuccess = false;
-        try {
-          const ytResponse = await axios.get('https://youtube138.p.rapidapi.com/channel/details/', {
-            params: { id: 'https://www.youtube.com/@ACXUANTAI', hl: 'en', gl: 'US' },
-            headers: { 'X-RapidAPI-Key': ytKey, 'X-RapidAPI-Host': 'youtube138.p.rapidapi.com' }
-          });
-          
-          const data = ytResponse.data;
-          if (data && data.stats && data.stats.subscribers) {
-            stats.youtube = data.stats.subscribers;
-            ytSuccess = true;
-          } else if (data && data.subscriberCountText) {
-            const text = data.subscriberCountText.simpleText || "";
-            const match = text.match(/([0-9.,]+)/);
-            if (match) {
-              let val = parseFloat(match[1].replace(/,/g, ''));
-              if (text.includes('K')) val *= 1000;
-              if (text.includes('M')) val *= 1000000;
-              stats.youtube = Math.floor(val);
-              ytSuccess = true;
-            }
-          }
-        } catch (e: any) { 
-          console.log("YouTube API call failed (handled gracefully):", e.message);
-        }
-
-        // Public scraping fallback if API failed
-        if (!ytSuccess) {
-          console.log("YouTube RapidAPI failed or returned invalid data. Trying direct scraping fallback...");
-          const ytScrapeRes = await axios.get("https://www.youtube.com/@ACXUANTAI", {
-            headers: {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-              "Accept-Language": "en-US,en;q=0.9"
-            },
-            timeout: 8000
-          });
-          const html = ytScrapeRes.data || "";
-          const match = html.match(/\"subscriberCountText\":\s*\{\s*\"simpleText\":\s*\"([^\"]+)\"/i) ||
-                        html.match(/\"subscriberCountText\":\s*\{\s*\"runs\":\s*\[\s*\{\s*\"text\":\s*\"([^\"]+)\"/i) ||
-                        html.match(/([0-9.,MK]+)\s*subscribers/i);
-          if (match) {
-            const textVal = match[1];
-            let val = parseFloat(textVal.replace(/[^0-9.]/g, ''));
-            if (textVal.toLowerCase().includes('k')) {
-              val *= 1000;
-            } else if (textVal.toLowerCase().includes('m')) {
-              val *= 1000000;
-            }
-            stats.youtube = Math.floor(val);
-            console.log(`Scraped live YouTube Subscribers: ${stats.youtube}`);
-            ytSuccess = true;
-          }
-        }
-        console.log(`YouTube Stats: ${stats.youtube}`);
-      } catch (e: any) { 
-        console.log("YouTube retrieval completely failed (handled gracefully):", e.message);
-      }
-    }
-
-    // 2. Facebook Stats Override / Fetch
-    if (process.env.OVERRIDE_FACEBOOK_STATS) {
-      stats.facebook = parseInt(process.env.OVERRIDE_FACEBOOK_STATS);
-      console.log(`Facebook Stats (override): ${stats.facebook}`);
-    } else {
-      try {
-        console.log(`Using FB Key starting with: ${fbKey.substring(0, 5)}`);
-        // Corrected profile name from index.html: nxuantai. 
-        // If details fails, try another endpoint if the API provider changed them
-        let fbResponse;
-        try {
-          fbResponse = await axios.get('https://facebook-scraper3.p.rapidapi.com/profile/details', {
-            params: { profile_id: 'nxuantai' }, 
-            headers: { 'X-RapidAPI-Key': fbKey, 'X-RapidAPI-Host': 'facebook-scraper3.p.rapidapi.com' },
-            timeout: 8000
-          });
-        } catch (fbApiError: any) {
-          console.log(`Facebook details API call failed with info: ${fbApiError.message}. Trying direct scraping fallback...`);
-        }
-
-        if (fbResponse && fbResponse.data) {
-          const data = fbResponse.data;
-          fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[FB RESPONSE]: ${JSON.stringify(data).substring(0, 1000)}`);
-          
-          const followerVal = data.follower_count || 
-                            (data.followers && data.followers.count) || 
-                            (data.about && data.about.followers) ||
-                            data.subscribers_count ||
-                            data.follower_count_text;
-          
-          if (followerVal) {
-            let val = typeof followerVal === 'string' ? parseInt(followerVal.replace(/[^0-9]/g, '')) : followerVal;
-            if (val > 0) stats.facebook = val;
-          } else {
-            const raw = JSON.stringify(data);
-            const fbMatch = raw.match(/"follower[s]?_count":\s*"?([0-9.,]+)"?/i) || 
-                            raw.match(/"followers":\s*\{"count":\s*(\d+)\}/i) ||
-                            raw.match(/([0-9.,]+)\s*followers/i);
-            if (fbMatch) {
-              stats.facebook = parseInt(fbMatch[1].replace(/[,.]/g, ''));
-            }
-          }
-        } else {
-          // Facebook scraping fallback
-          console.log("Fetching Facebook public page for scraping followers...");
-          const fbScrapeRes = await axios.get("https://www.facebook.com/nxuantai", {
-            headers: {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-            },
-            timeout: 10000
-          });
-          const fbHtml = fbScrapeRes.data || "";
-          fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[FB SCRAPE LENGTH]: ${fbHtml.length}`);
-          
-          // Match numbers of followers
-          const fbMatch = fbHtml.match(/([0-9.,]+)\s*followers/i) || 
-                          fbHtml.match(/([0-9.,]+)\s*người theo dõi/i) ||
-                          fbHtml.match(/"follower_count":\s*(\d+)/i) ||
-                          fbHtml.match(/"followers"\s*:\s*\{\s*"count"\s*:\s*(\d+)/i) ||
-                          fbHtml.match(/"subscriber_count":\s*(\d+)/i);
-          
-          if (fbMatch) {
-            let textVal = fbMatch[1];
-            let val = 0;
-            if (textVal.toLowerCase().includes('k')) {
-              val = parseFloat(textVal.toLowerCase().replace('k', '')) * 1000;
-            } else if (textVal.toLowerCase().includes('m')) {
-              val = parseFloat(textVal.toLowerCase().replace('m', '')) * 1000000;
-            } else {
-              val = parseInt(textVal.replace(/[^0-9]/g, ''));
-            }
-            if (val > 0) {
-              stats.facebook = Math.floor(val);
-              console.log(`Scraped Facebook Followers: ${stats.facebook}`);
-            }
-          }
-        }
-        console.log(`Facebook Stats: ${stats.facebook}`);
-      } catch (e: any) { 
-        fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[FB SCRAPE ERROR]: ${e.message}`);
-        console.log("Facebook retrieval info (handled gracefully):", e.message);
-      }
-    }
-
-    // 3. TikTok Override / Fetch (Scraping)
-    if (process.env.OVERRIDE_TIKTOK_STATS) {
-      stats.tiktok = parseInt(process.env.OVERRIDE_TIKTOK_STATS);
-      console.log(`TikTok Stats (override): ${stats.tiktok}`);
-    } else {
-      try {
-        // Adding common params to look more like a browser
-        const ttRes = await axios.get("https://www.tiktok.com/@acxuantai?is_from_webapp=1&is_copy_url=0", { 
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache"
-          }, 
-          timeout: 12000 
-        });
-        const ttHtml = ttRes.data;
-        fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT HTML LENGTH]: ${ttHtml.length} - SNIPPET: ${ttHtml.toString().substring(0, 300)}`);
-        
-        const hydrationMatch = ttHtml.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" [^>]*>([^<]+)<\/script>/);
-        if (hydrationMatch) {
-           try {
-             const jsonData = JSON.parse(hydrationMatch[1]);
-             // Path might vary, let's log keys if possible or try multiple paths
-             const userDetail = jsonData?.__DEFAULT_SCOPE__?.["webapp.user-detail"];
-             const statObj = userDetail?.userInfo?.stats;
-             
-             if (statObj && statObj.followerCount) {
-               stats.tiktok = statObj.followerCount;
-             } else {
-                 fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT JSON KEYS]: ${Object.keys(jsonData?.__DEFAULT_SCOPE__ || {}).join(",")}`);
-             }
-           } catch (e: any) {
-             fs.appendFileSync(path.join(RECORDS_DIR, "debug_api.txt"), `\n\n[TT JSON PARSE ERROR]: ${e.message}`);
-           }
-        }
-
-        if (stats.tiktok === DEFAULT_STATS.tiktok || stats.tiktok === 0) {
-          const ttMatch = ttHtml.match(/"followerCount":(\d+)/i) || 
-                          ttHtml.match(/"count":(\d+),[^{]*"label":"followers"/i) ||
-                          ttHtml.match(/(\d+)\s*Followers/i);
-          if (ttMatch) {
-            stats.tiktok = parseInt(ttMatch[1]);
-          }
-        }
-        console.log(`TikTok Stats: ${stats.tiktok}`);
-      } catch (e: any) {
-        console.log("TikTok Scrape info (handled gracefully):", e.message);
-      }
-    }
-
-    stats.lastUpdate = Date.now();
-    return stats;
-  } catch (error) {
-    return null;
-  }
-}
-
-async function fetchSocialStats(force = false) {
-  let stats = { ...DEFAULT_STATS };
-  let lastUpdate = 0;
-  let dataLoaded = false;
-
-  // 1. Try loading stats from Firestore first
-  if (firestoreDb) {
+    // 1. YouTube Scrape
     try {
-      const docRef = doc(firestoreDb, "social_stats/latest");
-      const docSnap = await getDoc(docRef);
-      if (docSnap && docSnap.exists()) {
-        const data = docSnap.data();
-        if (data && typeof data.facebook === "number") {
-          stats.facebook = data.facebook;
-          stats.tiktok = data.tiktok;
-          stats.youtube = data.youtube;
-          stats.lastUpdate = data.lastUpdate || 0;
-          lastUpdate = stats.lastUpdate;
-          dataLoaded = true;
-          console.log("Loaded social stats successfully from Firestore:", stats);
-        }
-      }
-    } catch (e: any) {
-      console.error("Error retrieving social stats from Firestore (falling back to local JSON cache):", e.message);
-    }
-  }
-
-  // 2. Fallback to local 777.json file if Firestore is disabled or fails
-  if (!dataLoaded) {
-    if (fs.existsSync(SOCIAL_STATS_FILE)) {
-      try {
-        const data = fs.readFileSync(SOCIAL_STATS_FILE, "utf-8");
-        stats = JSON.parse(data);
-        lastUpdate = stats.lastUpdate || 0;
-        dataLoaded = true;
-        console.log("Loaded social stats from local file 777.json cache:", stats);
-      } catch (e: any) {
-        console.error("Error reading fallback local 777.json file:", e.message);
-      }
-    }
-  }
-
-  const now = Date.now();
-  const ONE_DAY = 24 * 60 * 60 * 1000; // Cập nhật chuẩn mỗi ngày 1 lần (24 giờ)
-
-  // Force update if we have absolutely no data, or if values are defaults, or if 24 hours have elapsed
-  const forceUpdate = force || !dataLoaded || stats.lastUpdate === 0;
-  const isExpired = force || (now - lastUpdate) > ONE_DAY;
-
-  if (forceUpdate || isExpired) {
-    if (!isUpdateInProgress) {
-      isUpdateInProgress = true;
-      console.log(forceUpdate ? "Social stats cache empty or forced, updating immediately..." : "Social stats expired (24h+), updating in background...");
-      
-      const updatePromise = getStatsFromRapidAPI(stats).then(async (newStats) => {
-        if (newStats) {
-          newStats.lastUpdate = Date.now();
-          
-          // Write backup to local 777.json
-          try {
-            fs.writeFileSync(SOCIAL_STATS_FILE, JSON.stringify(newStats, null, 2));
-            fs.chmodSync(SOCIAL_STATS_FILE, 0o777); 
-            console.log("Backup local 777.json file updated successfully.");
-          } catch (localErr: any) {
-            console.error("Error writing backup local 777.json file:", localErr.message);
-          }
-
-          // Persist eternally in Firestore
-          if (firestoreDb) {
-            try {
-              const payload = {
-                ...newStats,
-                writeToken: "e9b1d120-fbc0-4c8d-b089-a29d6756811e"
-              };
-              const docRef = doc(firestoreDb, "social_stats/latest");
-              await setDoc(docRef, payload);
-              console.log("Social stats persisted to custom Firestore db successfully.");
-            } catch (fireErr: any) {
-              console.error("Error persisting social stats to Firestore:", fireErr.message);
-              try {
-                handleFirestoreError(fireErr, OperationType.WRITE, "social_stats/latest");
-              } catch (innerErr) {
-                // Handled gracefully in update background
-              }
+        const cleanYtId = ytId.trim().startsWith('@') ? ytId.trim() : `@${ytId.trim()}`;
+        const ytRes = await axios.get(`https://www.youtube.com/${cleanYtId.replace(/\s+/g, '')}`, { headers, timeout: 6000 });
+        const html = ytRes.data || "";
+        const match = html.match(/"subscriberCountText":\s*\{\s*"simpleText":\s*"([^"]+)"/i) ||
+                      html.match(/"subscriberCountText".*?"label"\s*:\s*"([^"]+)"/i) ||
+                      html.match(/"subscriberCountText":\s*\{\s*"runs":\s*\[\s*\{\s*"text":\s*"([^"]+)"/i) ||
+                      html.match(/<meta itemprop="interactionCount" content="([0-9]+)">/i);
+        if (match) {
+            const textVal = match[1];
+            let val = parseFloat(textVal.replace(/,/g, '.').replace(/[^0-9.]/g, ''));
+            if (textVal.toLowerCase().includes('k') || textVal.toLowerCase().includes('ngàn') || textVal.toLowerCase().includes('thousand') || textVal.toLowerCase().includes('nhìn') || textVal.toLowerCase().includes('nghin')) val *= 1000;
+            if (textVal.toLowerCase().includes('m') || textVal.toLowerCase().includes('tr') || textVal.toLowerCase().includes('triệu') || textVal.toLowerCase().includes('million')) val *= 1000000;
+            if (textVal.includes('萬') || textVal.includes('万')) val *= 10000;
+            if (val > 0) {
+                liveSocialStats.youtube = Math.floor(val);
+                console.log(`Successfully scraped YouTube live subscribers: ${liveSocialStats.youtube}`);
             }
-          }
-          return newStats;
         }
-        return null;
-      }).finally(() => {
-        isUpdateInProgress = false;
-      });
-
-      // Synchronously wait on the first loading or empty statistics so they don't see 0s
-      if (forceUpdate) {
-        const updated = await updatePromise;
-        if (updated) stats = updated;
-      }
+        const nameMatch = html.match(/<meta property="og:title" content="([^"]+)">/i) ||
+                          html.match(/<title>([^<]+)<\/title>/i);
+        if (nameMatch) {
+            let ytName = nameMatch[1].replace(" - YouTube", "").trim();
+            if (ytName) {
+                liveSocialStats.youtubeName = ytName;
+                console.log(`Successfully scraped YouTube live name: ${ytName}`);
+            }
+        }
+    } catch (e: any) {
+        console.warn(`YouTube Scrape failed (will use Admin CP fallback): ${e.message}`);
     }
-  }
 
-  // Always enforce manual overrides
-  if (process.env.OVERRIDE_FACEBOOK_STATS) {
-    stats.facebook = parseInt(process.env.OVERRIDE_FACEBOOK_STATS);
-  }
-  if (process.env.OVERRIDE_TIKTOK_STATS) {
-    stats.tiktok = parseInt(process.env.OVERRIDE_TIKTOK_STATS);
-  }
-  if (process.env.OVERRIDE_YOUTUBE_STATS) {
-    stats.youtube = parseInt(process.env.OVERRIDE_YOUTUBE_STATS);
-  }
+    // 2. TikTok Scrape
+    try {
+        const cleanTtId = ttId.startsWith('@') ? ttId : `@${ttId}`;
+        const ttRes = await axios.get(`https://www.tiktok.com/${cleanTtId}`, { headers, timeout: 6000 });
+        const html = ttRes.data || "";
+        
+        let parsedFromHydration = false;
+        const hydrationMatch = html.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" [^>]*>([^<]+)<\/script>/);
+        if (hydrationMatch) {
+            try {
+                const jsonData = JSON.parse(hydrationMatch[1]);
+                const userDetail = jsonData?.__DEFAULT_SCOPE__?.["webapp.user-detail"];
+                const statObj = userDetail?.userInfo?.stats;
+                const userObj = userDetail?.userInfo?.user;
+                if (statObj && typeof statObj.followerCount === "number" && statObj.followerCount > 0) {
+                    liveSocialStats.tiktok = statObj.followerCount;
+                    parsedFromHydration = true;
+                    console.log(`Successfully parsed TikTok live followers from hydration: ${liveSocialStats.tiktok}`);
+                }
+                if (userObj && userObj.nickname) {
+                    liveSocialStats.tiktokName = userObj.nickname;
+                    console.log(`Successfully parsed TikTok nickname from hydration: ${liveSocialStats.tiktokName}`);
+                }
+            } catch (jsonErr) {}
+        }
+        
+        if (!parsedFromHydration) {
+            const ttMatch = html.match(/"followerCount":(\d+)/i) || 
+                            html.match(/"count":(\d+),[^{]*"label":"followers"/i) ||
+                            html.match(/(\d+)\s*Followers/i);
+            if (ttMatch) {
+                const val = parseInt(ttMatch[1]);
+                if (val > 0) {
+                    liveSocialStats.tiktok = val;
+                    console.log(`Successfully scraped TikTok live followers: ${liveSocialStats.tiktok}`);
+                }
+            }
+        }
+        const nameMatch = html.match(/<meta property="og:title" content="([^"]+)">/i) ||
+                          html.match(/<title>([^<]+)<\/title>/i);
+        if (nameMatch) {
+            let ttName = nameMatch[1].split('(@')[0].trim();
+            if (ttName && !ttName.includes('TikTok') && !ttName.includes('Make Your Day')) {
+                liveSocialStats.tiktokName = ttName;
+                console.log(`Successfully scraped TikTok live name: ${ttName}`);
+            }
+        }
+    } catch (e: any) {
+        console.warn(`TikTok Scrape failed (will use Admin CP fallback): ${e.message}`);
+    }
 
-  return stats;
+    // 3. Facebook Scrape
+    try {
+        const cleanFbId = fbId.replace(/https:\/\/(www\.)?facebook\.com\//i, '').replace(/^\//, '').replace(/\s+/g, '');
+        // Using facebookexternalhit ensures Facebook returns open graph data and no login wall
+        const fbRes = await axios.get(`https://www.facebook.com/${cleanFbId}`, { 
+            headers: {
+                "User-Agent": "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
+                "Accept-Language": "en-US,en;q=0.9"
+            }, 
+            timeout: 8000 
+        });
+        const html = fbRes.data || "";
+        
+        let val = 0;
+        const ogDescMatch = html.match(/<meta\s+name="description"\s+content="([^"]+)"/i) || html.match(/<meta\s+property="og:description"\s+content="([^"]+)"/i);
+        if (ogDescMatch) {
+            const ogDesc = ogDescMatch[1];
+            const fbMatch = ogDesc.match(/([0-9.,KMB]+)\s+(followers|likes)/i) || ogDesc.match(/([0-9.,KMB]+)\s+người theo dõi/i);
+            if (fbMatch) {
+                const textVal = fbMatch[1].toUpperCase();
+                if (textVal.includes('K')) {
+                    val = parseFloat(textVal.replace('K', '').replace(',', '.')) * 1000;
+                } else if (textVal.includes('M')) {
+                    val = parseFloat(textVal.replace('M', '').replace(',', '.')) * 1000000;
+                } else {
+                    val = parseInt(textVal.replace(/[^0-9]/g, ''));
+                }
+                if (val > 0) {
+                    liveSocialStats.facebook = val;
+                    console.log(`Successfully scraped Facebook live followers: ${liveSocialStats.facebook}`);
+                }
+            }
+        }
+        
+        const ogTitleMatch = html.match(/<title>([^<]+)<\/title>/i) || 
+                             html.match(/<meta[^>]+property="og:title"[^>]+content="([^"]+)"/i) || 
+                             html.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:title"/i);
+        if (ogTitleMatch) {
+            let fbName = decodeHtmlEntities(ogTitleMatch[1]).replace(" | Facebook", "").split(" - ")[0].trim();
+            if (fbName && fbName !== "Facebook" && !fbName.includes("Log In")) {
+                liveSocialStats.facebookName = fbName;
+                console.log(`Successfully scraped Facebook live name: ${fbName}`);
+            }
+        }
+    } catch (e: any) {
+        console.warn(`Facebook Scrape failed (will use Admin CP fallback): ${e.message}`);
+    }
+
+    liveSocialStats.lastChecked = Date.now();
+    isFetchRunning = false;
 }
 
 app.get("/api/social-stats", async (req, res) => {
-    const force = req.query.force === "true";
-    const stats = await fetchSocialStats(force);
-    res.json(stats);
+    let configFb = 0;
+    let configTt = 0;
+    let configYt = 0;
+    let configFbName = "";
+    let configTtName = "";
+    let configYtName = "";
+    let fbId = "nxuantai";
+    let ttId = "@acxuantai";
+    let ytId = "@acxuantai";
+
+    // Load from Firestore first, fallback to local config
+    const ADMIN_CONFIG_FILE = path.join(RECORDS_DIR, "admin_config.json");
+    let loadedFromFirestore = false;
+
+    if (firestoreDb) {
+        try {
+            const docRef = doc(firestoreDb, "configs", "admin_config");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const config = docSnap.data();
+                if (config && config.socials) {
+                    if (config.socials.facebook !== undefined) fbId = config.socials.facebook;
+                    if (config.socials.tiktok !== undefined) ttId = config.socials.tiktok;
+                    if (config.socials.youtube !== undefined) ytId = config.socials.youtube;
+                    if (config.socials.facebookFollowers !== undefined) configFb = Number(config.socials.facebookFollowers);
+                    if (config.socials.tiktokFollowers !== undefined) configTt = Number(config.socials.tiktokFollowers);
+                    if (config.socials.youtubeFollowers !== undefined) configYt = Number(config.socials.youtubeFollowers);
+                    if (config.socials.facebookName !== undefined) configFbName = config.socials.facebookName;
+                    if (config.socials.tiktokName !== undefined) configTtName = config.socials.tiktokName;
+                    if (config.socials.youtubeName !== undefined) configYtName = config.socials.youtubeName;
+                    loadedFromFirestore = true;
+                }
+            }
+        } catch (e: any) {
+            console.error("Error reading social stats from Firestore:", e.message);
+        }
+    }
+
+    if (!loadedFromFirestore && fs.existsSync(ADMIN_CONFIG_FILE)) {
+        try {
+            const data = fs.readFileSync(ADMIN_CONFIG_FILE, "utf-8");
+            const config = JSON.parse(data);
+            if (config && config.socials) {
+                if (config.socials.facebook !== undefined) fbId = config.socials.facebook;
+                if (config.socials.tiktok !== undefined) ttId = config.socials.tiktok;
+                if (config.socials.youtube !== undefined) ytId = config.socials.youtube;
+                if (config.socials.facebookFollowers !== undefined) configFb = Number(config.socials.facebookFollowers);
+                if (config.socials.tiktokFollowers !== undefined) configTt = Number(config.socials.tiktokFollowers);
+                if (config.socials.youtubeFollowers !== undefined) configYt = Number(config.socials.youtubeFollowers);
+                if (config.socials.facebookName !== undefined) configFbName = config.socials.facebookName;
+                if (config.socials.tiktokName !== undefined) configTtName = config.socials.tiktokName;
+                if (config.socials.youtubeName !== undefined) configYtName = config.socials.youtubeName;
+            }
+        } catch (e) {
+            console.error("Error reading social stats from local config:", e);
+        }
+    }
+
+    // Clear cache if the target IDs have changed dynamically
+    if (fbId !== liveSocialStats.facebookId) {
+        liveSocialStats.facebook = null;
+        liveSocialStats.facebookName = "";
+        liveSocialStats.facebookId = fbId;
+        liveSocialStats.lastChecked = 0;
+    }
+    if (ttId !== liveSocialStats.tiktokId) {
+        liveSocialStats.tiktok = null;
+        liveSocialStats.tiktokName = "";
+        liveSocialStats.tiktokId = ttId;
+        liveSocialStats.lastChecked = 0;
+    }
+    if (ytId !== liveSocialStats.youtubeId) {
+        liveSocialStats.youtube = null;
+        liveSocialStats.youtubeName = "";
+        liveSocialStats.youtubeId = ytId;
+        liveSocialStats.lastChecked = 0;
+    }
+
+    // Trigger update if data is stale (cached for 30 minutes)
+    const STALE_TIME = 30 * 60 * 1000;
+    if (Date.now() - liveSocialStats.lastChecked > STALE_TIME || req.query.force === "true") {
+        // If we don't have data yet (first run or ID changed), await the result synchronously
+        if (liveSocialStats.lastChecked === 0) {
+            await updateSocialStatsLive(fbId, ttId, ytId).catch(err => console.error("Error checking live social stats synchronously:", err));
+        } else {
+            // Otherwise, update in background
+            updateSocialStatsLive(fbId, ttId, ytId).catch(err => console.error("Error checking live social stats asynchronously:", err));
+        }
+    }
+
+    // Check query override parameter as quick manual debugs if present
+    const forceFb = req.query.facebook ? Number(req.query.facebook) : null;
+    const forceTt = req.query.tiktok ? Number(req.query.tiktok) : null;
+    const forceYt = req.query.youtube ? Number(req.query.youtube) : null;
+
+    console.log("DEBUG /api/social-stats values:", { forceYt, liveYt: liveSocialStats.youtube, configYt });
+
+    res.json({
+        facebook: forceFb || (configFb > 1 ? configFb : liveSocialStats.facebook) || 82000,
+        facebookName: configFbName || liveSocialStats.facebookName || "Nguyễn Xuân Tài",
+        facebookId: fbId,
+        tiktok: forceTt || (configTt > 1 ? configTt : liveSocialStats.tiktok) || 409500,
+        tiktokName: configTtName || liveSocialStats.tiktokName || "A.C Xuân Tài",
+        tiktokId: ttId,
+        youtube: forceYt || (configYt > 1 ? configYt : liveSocialStats.youtube) || 35400,
+        youtubeName: configYtName || liveSocialStats.youtubeName || "A.C XUÂN TÀI",
+        youtubeId: ytId,
+        lastUpdate: liveSocialStats.lastChecked || Date.now()
+    });
 });
 
-// Trigger social stats checking on page loads to maintain 24h background updates
-app.use((req, res, next) => {
-    if (req.path === "/" || req.path.startsWith("/api")) {
-        fetchSocialStats().catch(() => {});
+// ADMIN CONFIGURATION AND PERSISTENCE API
+const ADMIN_CONFIG_FILE = path.join(RECORDS_DIR, "admin_config.json");
+
+const DEFAULT_ADMIN_CONFIG = {
+  logoUrl: "https://acxuantai.com/img/logo/logo-black.png",
+  logoWhiteUrl: "https://acxuantai.com/img/logo/logo-white.png",
+  faviconUrl: "https://acxuantai.com/favicon.ico",
+  websiteTitle: "A.C Xuân Tài - Singer-songwriter, Music Producer",
+  coverImageUrl: "https://acxuantai.com/img/about-img4.png",
+  coverImageTransparent: "",
+  roles: ["Ca nhạc sĩ", "Music Producer", "MV/ Film/ TVC Producer", "Content Creator", "KOL"],
+  artistName: "A.C Xuân Tài",
+  bio1: "Singer-songwriter, Music Producer",
+  bio2: "Founder & CEO of XT Production",
+  education: [
+    { year: "2009 - 2012", title: "THPT Chuyên Phan Bội Châu - Nghệ An", desc: "Học sinh lớp chuyên Tin (A2k38), tại trường THPT chuyên Phan Bội Châu - Nghệ An" },
+    { year: "2012 - 2016", title: "Đại Học FPT", desc: "Sinh viên ngành Kỹ Thuật Phần Mềm, Đại Học FPT Hà Nội với Học Bổng Toàn Phần. Tốt nghiệp năm 2016." },
+    { year: "05/2015 - 09/2015", title: "Thực Tập Tại Nhật Bản", desc: "Thực tập tại công ty Suzuki Shouten ở Osaka, Nhật Bản trong vai trò Web Developer." },
+    { year: "10/2014", title: "Trao đổi sinh viên tại ĐH Bunkyo", desc: "Tham gia chương trình trao đổi sinh viên tại trường ĐH Bunkyo ở Tokyo, Nhật Bản." }
+  ],
+  experience: [
+    { year: "2025", title: "Nhạc Phim điện ảnh Hoàng Tử Quỷ", desc: "Sáng tác, sản xuất và thể hiện ca khúc \"Một Thời Khắc Khác - A.C Xuân Tài, DT Tập Rap\" nhạc phim điện ảnh Hoàng Tử Quỷ ( Đạo diễn: Trần Hữu Tấn, Diễn viên: Anh Tú Atus, Lương Thế Thành, Hoàng Linh Chi...), khởi chiếu từ 5.12.2025 tại các rạp trên toàn quốc.." },
+    { year: "2023", title: "Top 1 Trending Youtube Music Việt nam", desc: "Sáng tác ca khúc \"Vì Em Chưa Bao Giờ Khóc - Hà Nhi\", giữ vị trí Top 1 Trending Youtube Music Việt Nam trong 2 tuần." },
+    { year: "2023", title: "Vinhomes Ca", desc: "Sáng tác ca khúc \"Vươn Xa Cùng Thế Giới\", Giải nhì cuộc thi Sáng Tác Ca Khúc 30 năm Vingroup, giải thưởng 500 triệu đồng. Ca khúc sau đó được sử dụng làm Vinhomes Ca" },
+    { year: "2021", title: "Ca Khúc Chủ Đề Running Man Vietnam ss2", desc: "Sáng Tác, Thể hiện và Sản xuất Ca khúc chủ đề \"Chạy Đi\" của Running Man Vietnam season 2 - Chơi Là Chạy. Giải Nhất cuộc thi sáng tác Themes Song." },
+    { year: "2020", title: "Giám Đốc Âm Nhạc - Web Drama Hoàng Quý Muội", desc: "Giám Đốc Âm nhạc dự án Web Drama lớn của đạo diễn Luk Van - \"Hoàng Quý Muội\", Sáng Tác và Sản Xuất toàn bộ soundtrack trong phim, trong đó có 3 ca khúc OST.\nBỏ Lỡ Nhau Rồi - Hải Nam\nNếu Chúng Ta Chưa Từng Gặp - A.C Xuân Tài\nLà Vì Anh - Mai Fin ft. A.C Xuân Tài" },
+    { year: "2019-nay", title: "Giám Đốc Sản Xuất, Đạo Diễn MV", desc: "Giám Đốc Sản Xuất và Đạo Diễn các MV như:\n7 Tỷ Người - A.C Xuân Tài ft. Deus Tiến Đạt (2019)\nPhải Chăng Trưởng Thành Là Chia Ly - A.C Xuân Tài (2020)\nSau 30 - A.C Xuân Tài ft. Mina Phan, Duy Andy (2021)\nAnh Đã Tìm Được Em - A.C Xuân Tài (2022)\nChầm Chậm Cùng Anh - A.C Xuân Tài (2022)\n...\nvới rất nhiều nghệ sĩ khách mời nổi tiếng như: Lynk Lee, Đức SVM, Lê Lý Lan Hương, Lương Huy, Thúy Kiều FAPTV, Yuno Bigboi, Củ Tỏi, Zero9, ..." },
+    { year: "2018-nay", title: "Khách Mời Game Show", desc: "Là khách mời của rât nhiều Game Show truyền hình nổi tiếng như:\nKý Ức Vui Vẻ (ss3 #10)\nKhúc Hát Se Duyên (#13)\nSàn Đấu Ca Từ (ss3 #12, ss4 #14)\nĐấu Trường Âm Nhạc (ss3 #11)\nAi Là Triệu Phú (17/6/2025)\nCa Sĩ Bí Ẩn (ss3 #3)\nGiọng Ca Bí Ẩn (ss2 #6)\nBản Lĩnh Ngôi Sao (#129)\nNgười Hát Tình Ca 2024 (#6)\nKhuôn Mặt Đáng Tin (#16)\nĐối Mặt Thời Gian (ss1 #4)\nChọn Đâu Cho Đúng (ss3 #6)\nTrai Đẹp Vào Bếp (#18)\nTình Khúc Giao Mùa (ss2 #4)\nTặng Em Một Bản Tình Ca (#3)\n..." },
+    { year: "2017-nay", title: "Sản Xuất nhạc Phim Web Drama", desc: "Sáng tác, hát và sản xuất OST cho rất nhiều Web Drama triệu view như: SVM Mì Tôm, Tình Đầu Đại Ca, Năm Đó Chúng Ta 18, Tự Giác Yêu Anh, Thiên Ân Phiêu Lưu Ký, Vợ Chồng Sửu Nhi, WHO ARE YOU..." },
+    { year: "2016", title: "Nhạc phim Điện Ảnh \"Tháng 5 Để Dành\"", desc: "Sáng tác ca khúc \"Cơn Mưa Tuổi Thanh Xuân - Lynk Lee\", OST Phim Điện Ảnh \"Tháng 5 Để Dành\" của Đạo diễn Lê Hà Nguyên." },
+    { year: "2015-nay", title: "Sản Xuất Nhạc Quảng Cáo, Nhạc Thương Hiệu", desc: "Sáng Tác, Thể hiện và Sản xuất các ca khúc nhạc Thương Hiệu, nhạc Quảng Cáo cho các Thương Hiệu lớn nhỏ như: Nội Thất Ahome, Đại Học FPT, Đại Học Văn Hiến, GIZ, Sumo Yakiniku, Kichi Kichi..." }
+  ],
+  portfolio: [
+    { imageUrl: "https://acxuantai.com/img/portfolio/01.jpg", title: "Đấu Trường Âm Nhạc", role: "Người Chơi", url: "https://www.youtube.com/watch?v=W0_x5xqWI-E" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/02.jpg", title: "Trai Đẹp vào Bếp", role: "Khách Mời", url: "https://www.youtube.com/watch?v=3seFVv1Obic" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/03.jpg", title: "Ký Ức Vui Vẻ", role: "Ca Sĩ Biểu Diễn", url: "https://www.youtube.com/watch?v=bs5UOaPj0wA" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/04.jpg", title: "Sàn Đấu Ca Từ", role: "Người Chơi", url: "https://www.youtube.com/watch?v=nLsgBN0qyqk" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/08.jpg", title: "MV Sau 30", role: "Giám Đốc Sản Xuất, Đạo Diễn, Diễn Viên, Ca Sĩ, Nhạc Sĩ", url: "https://www.youtube.com/watch?v=5sfkgT-_LD8" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/06.jpg", title: "La La School", role: "Diễn Viên", url: "https://youtu.be/QFiSU0f-pbc?t=1078" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/05.jpg", title: "Hoàng Quý Muội", role: "Giám Đốc Âm Nhạc, Diễn Viên", url: "https://pops.vn/series/hoang-quy-muoi-5fae5a102b1bd200354e4c88" },
+    { imageUrl: "https://acxuantai.com/img/portfolio/07.jpg", title: "Ca Sĩ Bí Ẩn", role: "Ca Sĩ Biểu Diễn", url: "https://www.youtube.com/watch?v=WPQSWe1cFxY&t=285s" }
+  ],
+  socials: {
+    facebook: "nxuantai",
+    facebookName: "Nguyễn Xuân Tài",
+    tiktok: "@acxuantai",
+    tiktokName: "A.C Xuân Tài",
+    youtube: "@acxuantai",
+    youtubeName: "A.C Xuân Tài",
+    facebookFollowers: 82190,
+    tiktokFollowers: 409505,
+    youtubeFollowers: 15700
+  },
+  services: [
+    { name: "Sáng Tác", desc: "Sáng tác bài hát, nhạc phim, nhạc quảng cáo." },
+    { name: "Biểu Diễn", desc: "Ca sĩ biểu diễn tại các sự kiện chuyên nghiệp." },
+    { name: "Quảng Bá", desc: "KOL/Booking quảng bá thương hiệu cá nhân và doanh nghiệp." },
+    { name: "Sản Xuất", desc: "Sản xuất MV, Phim, Viral Clips chuyên nghiệp." },
+    { name: "Sáng Tạo", desc: "Sáng tạo nội dung trên đa nền tảng xã hội." },
+    { name: "Âm Nhạc", desc: "Music Producer & Audio Production trọn gói." },
+    { name: "Hòa Âm Phối Khí", desc: "Hòa âm phối khí chuyên nghiệp cho ca sĩ." },
+    { name: "Thu Âm", desc: "Thu âm phòng thu chất lượng cao, hậu kỳ chuyên sâu." },
+    { name: "Đào Tạo", desc: "Đạo tạo sản xuất âm nhạc và thanh họa." }
+  ],
+  contacts: {
+    phone: "085.6600666",
+    email: "hi@acxuantai.com",
+    customOptions: [
+      { title: "Kho nhạc & Demo", desc: "tài.vn", url: "https://tài.vn" }
+    ]
+  },
+  games: {
+    minesweeperName: "Dò Mìn",
+    game2048Name: "2048",
+    tetrisName: "Xếp Hình",
+    pikachuName: "Pikachu"
+  },
+  floatingButton: {
+    icon: "music",
+    text: "Kho Nhạc",
+    url: "https://tài.vn"
+  }
+};
+
+app.get("/api/admin-config", async (req, res) => {
+    const handleSelfHealing = (config: any) => {
+        if (!config) return config;
+        let dirty = false;
+        if (!config.faviconUrl || config.faviconUrl === "https://acxuantai.com/img/flags/us.svg") {
+            config.faviconUrl = "https://acxuantai.com/favicon.ico";
+            dirty = true;
+        }
+        if (!config.experience || config.experience.length <= 2) {
+            config.experience = DEFAULT_ADMIN_CONFIG.experience;
+            dirty = true;
+        }
+        if (dirty) {
+            fs.writeFileSync(ADMIN_CONFIG_FILE, JSON.stringify(config, null, 2));
+            if (firestoreDb) {
+                const docRef = doc(firestoreDb, "configs", "admin_config");
+                setDoc(docRef, config, { merge: true }).catch(err => console.error("Self-heal Firestore save err:", err));
+            }
+        }
+        return config;
+    };
+
+    // 1. Try local cache file
+    if (fs.existsSync(ADMIN_CONFIG_FILE)) {
+        try {
+            const data = fs.readFileSync(ADMIN_CONFIG_FILE, "utf-8");
+            let parsed = JSON.parse(data);
+            if (parsed) {
+                delete parsed.writeToken;
+                parsed = handleSelfHealing(parsed);
+            }
+            return res.json(parsed);
+        } catch (e) {
+            console.error("Failed to parse local admin_config.json, falling back...");
+        }
     }
-    next();
+
+    // 2. Try Firestore
+    if (firestoreDb) {
+        try {
+            const docRef = doc(firestoreDb, "configs", "admin_config");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                let configData = docSnap.data();
+                if (configData) {
+                    delete configData.writeToken;
+                    configData = handleSelfHealing(configData);
+                }
+                fs.writeFileSync(ADMIN_CONFIG_FILE, JSON.stringify(configData, null, 2));
+                return res.json(configData);
+            }
+        } catch (e: any) {
+            console.error("Error reading admin config from Firestore:", e.message);
+        }
+    }
+
+    // 3. Fallback to default
+    return res.json(DEFAULT_ADMIN_CONFIG);
+});
+
+app.post("/api/admin/save-config", async (req, res) => {
+    const { password, config } = req.body;
+    if (password !== "MatKhauDay123") {
+        return res.status(401).json({ error: "Incorrect password" });
+    }
+    if (!config || typeof config !== "object") {
+        return res.status(400).json({ error: "Invalid config object" });
+    }
+
+    // Save locally
+    try {
+        fs.writeFileSync(ADMIN_CONFIG_FILE, JSON.stringify(config, null, 2));
+        try { fs.chmodSync(ADMIN_CONFIG_FILE, 0o777); } catch(e) {}
+    } catch (e) {
+        console.error("Failed to write local config:", e);
+    }
+
+    // Save to Firestore for Cloud persistence
+    if (firestoreDb) {
+        try {
+            const docRef = doc(firestoreDb, "configs", "admin_config");
+            await setDoc(docRef, {
+                ...config,
+                writeToken: "e9b1d120-fbc0-4c8d-b089-a29d6756811e"
+            });
+            console.log("Admin config synced to Cloud Firestore.");
+        } catch (e: any) {
+            console.error("Failed to sync Admin config to Firestore:", e.message);
+        }
+    }
+
+    return res.json({ success: true });
+});
+
+// Update records from admin (delete record/edit name/reset game records)
+app.post("/api/admin/records/update", (req, res) => {
+    const { password, game, records } = req.body;
+    if (password !== "MatKhauDay123") {
+        return res.status(401).json({ error: "Incorrect password" });
+    }
+    if (!game || !Array.isArray(records)) {
+        return res.status(400).json({ error: "Invalid data params" });
+    }
+    const filePath = path.join(RECORDS_DIR, `${game}.json`);
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(records.slice(0, 10), null, 2));
+        try { fs.chmodSync(filePath, 0o777); } catch(e) {}
+        return res.json({ success: true, records });
+    } catch (e) {
+        return res.status(500).json({ error: "Failed to write records file" });
+    }
+});
+
+// PHP query mapping backwards compatibility for the game instances
+app.get("/api.php", (req, res) => {
+    const { game } = req.query;
+    if (!game) return res.status(400).json({ error: "Missing game parameter" });
+    const filePath = path.join(RECORDS_DIR, `${game}.json`);
+    if (fs.existsSync(filePath)) {
+        try {
+            const data = fs.readFileSync(filePath, "utf-8");
+            return res.json(JSON.parse(data));
+        } catch (e) {
+            return res.status(500).json({ error: "Failed to read records" });
+        }
+    }
+    return res.json([]);
+});
+
+app.post("/api.php", (req, res) => {
+    const { game } = req.query;
+    if (!game) return res.status(400).json({ error: "Missing game parameter" });
+    const { score, name, lowerIsBetter } = req.body;
+    if (typeof score !== 'number' || !name) {
+        return res.status(400).json({ error: "Invalid data" });
+    }
+    const filePath = path.join(RECORDS_DIR, `${game}.json`);
+    let records: any[] = [];
+    if (fs.existsSync(filePath)) {
+        try {
+            records = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        } catch (e) {
+            records = [];
+        }
+    }
+    const newEntry = { 
+        score, 
+        name, 
+        date: new Date().toISOString(),
+        id: Math.random().toString(36).substr(2, 9)
+    };
+    records.push(newEntry);
+    
+    // Sort: lower is better for Minesweeper, higher is better for others
+    const isLowerBetter = lowerIsBetter || (game === "minesweeper" || (typeof game === 'string' && game.startsWith("minesweeper")));
+    if (isLowerBetter) {
+        records.sort((a, b) => a.score - b.score);
+    } else {
+        records.sort((a, b) => b.score - a.score);
+    }
+    const top10 = records.slice(0, 10);
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(top10, null, 2));
+        fs.chmodSync(filePath, 0o777);
+    } catch(e) {}
+    
+    return res.json({ success: true, isTop10: top10.some(r => r.id === newEntry.id), records: top10 });
 });
 
 async function startServer() {
@@ -523,8 +738,6 @@ async function startServer() {
     
     app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on http://localhost:${PORT}`);
-        // Trigger initial forced fetch on startup to populate both custom and default databases
-        fetchSocialStats(true).catch(err => console.error("Initial fetch failed:", err));
     });
 }
 
